@@ -15,6 +15,7 @@
 		883EA44F1EA5C2550095F9A6 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 883EA44D1EA5C2550095F9A6 /* LaunchScreen.storyboard */; };
 		883EA45A1EA5C2550095F9A6 /* FHSqliteDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 883EA4591EA5C2550095F9A6 /* FHSqliteDemoTests.m */; };
 		883EA4651EA5C2550095F9A6 /* FHSqliteDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 883EA4641EA5C2550095F9A6 /* FHSqliteDemoUITests.m */; };
+		883EA4771EA5C5500095F9A6 /* fh_sqlite.c in Sources */ = {isa = PBXBuildFile; fileRef = 883EA4751EA5C5500095F9A6 /* fh_sqlite.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,9 @@
 		883EA4601EA5C2550095F9A6 /* FHSqliteDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FHSqliteDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		883EA4641EA5C2550095F9A6 /* FHSqliteDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FHSqliteDemoUITests.m; sourceTree = "<group>"; };
 		883EA4661EA5C2550095F9A6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		883EA4731EA5C4780095F9A6 /* FMSqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMSqlite.h; sourceTree = "<group>"; };
+		883EA4751EA5C5500095F9A6 /* fh_sqlite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fh_sqlite.c; sourceTree = "<group>"; };
+		883EA4761EA5C5500095F9A6 /* fh_sqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fh_sqlite.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +85,7 @@
 		883EA4331EA5C2550095F9A6 = {
 			isa = PBXGroup;
 			children = (
+				883EA4721EA5C4690095F9A6 /* FHSqlite */,
 				883EA43E1EA5C2550095F9A6 /* FHSqliteDemo */,
 				883EA4581EA5C2550095F9A6 /* FHSqliteDemoTests */,
 				883EA4631EA5C2550095F9A6 /* FHSqliteDemoUITests */,
@@ -138,6 +143,24 @@
 				883EA4661EA5C2550095F9A6 /* Info.plist */,
 			);
 			path = FHSqliteDemoUITests;
+			sourceTree = "<group>";
+		};
+		883EA4721EA5C4690095F9A6 /* FHSqlite */ = {
+			isa = PBXGroup;
+			children = (
+				883EA4731EA5C4780095F9A6 /* FMSqlite.h */,
+				883EA4741EA5C52F0095F9A6 /* Core */,
+			);
+			path = FHSqlite;
+			sourceTree = "<group>";
+		};
+		883EA4741EA5C52F0095F9A6 /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				883EA4751EA5C5500095F9A6 /* fh_sqlite.c */,
+				883EA4761EA5C5500095F9A6 /* fh_sqlite.h */,
+			);
+			path = Core;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -276,6 +299,7 @@
 				883EA4471EA5C2550095F9A6 /* ViewController.m in Sources */,
 				883EA4441EA5C2550095F9A6 /* AppDelegate.m in Sources */,
 				883EA4411EA5C2550095F9A6 /* main.m in Sources */,
+				883EA4771EA5C5500095F9A6 /* fh_sqlite.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
