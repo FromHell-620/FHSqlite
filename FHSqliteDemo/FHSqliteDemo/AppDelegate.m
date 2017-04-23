@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-
+#import <pthread/pthread.h>
 @interface AppDelegate ()
 
 @end
