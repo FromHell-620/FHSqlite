@@ -73,6 +73,17 @@ sqlite_db sqlite_db_initialize(SqliteRef sqlite,pthread_t thread)
     return db;
 }
 
+sqlite_db db_with_thread(SqliteRef sqlite,pthread_t thread)
+{
+    if (sqlite == NULL || thread == NULL) return NULL;
+    return (sqlite_db)CFDictionaryGetValue(sqlite->_db_cache, thread);
+}
+
+sqlite_db db_get_current(SqliteRef sqlite)
+{
+    return db_with_thread(sqlite, pthread_self());
+}
+
 void sqlite_delloc(SqliteRef sqlite)
 {
     if (sqlite == NULL) return;

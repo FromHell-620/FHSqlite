@@ -33,6 +33,8 @@ typedef _sqlite_db* sqlite_db;
 
 SqliteRef sqlite_initialize(const char* sqlite_path);
 
+sqlite_db db_get_current(SqliteRef sqlite);
+
 void sqlite_delloc(SqliteRef sqlite);
 
 void sqlite_db_delloc(sqlite_db _db);
