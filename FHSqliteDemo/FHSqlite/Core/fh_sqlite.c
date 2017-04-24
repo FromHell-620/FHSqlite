@@ -73,6 +73,34 @@ sqlite_db sqlite_db_initialize(SqliteRef sqlite,pthread_t thread)
     return db;
 }
 
+sqlite_db sqlite_open(SqliteRef sqlite)
+{
+    if (sqlite == NULL) return NULL;
+    sqlite_db _db = (sqlite_db)CFDictionaryGetValue(sqlite->_db_cache, pthread_self());
+    if (_db &&_db->_already_opened == false) {
+        if (sqlite3_open(sqlite->_sqlite_path, &_db->_db) == SQLITE_OK) {
+            _db->_already_opened = true;
+            return _db;
+        }else {
+            sqlite3_close(_db->_db);
+            return NULL;
+        }
+    }
+    
+    _db = sqlite_db_initialize(sqlite, pthread_self());
+    
+    sqlite3* db = NULL;
+    if (sqlite3_open(sqlite->_sqlite_path, &db) == SQLITE_OK) {
+        _db->_db = db;
+        _db->_already_opened = true;
+        CFDictionarySetValue(sqlite->_db_cache, pthread_self(), _db);
+    }else {
+        sqlite3_close(db);
+        return NULL;
+    }
+    return _db;
+}
+
 sqlite_db db_with_thread(SqliteRef sqlite,pthread_t thread)
 {
     if (sqlite == NULL || thread == NULL) return NULL;
@@ -82,6 +110,12 @@ sqlite_db db_with_thread(SqliteRef sqlite,pthread_t thread)
 sqlite_db db_get_current(SqliteRef sqlite)
 {
     return db_with_thread(sqlite, pthread_self());
+}
+
+bool db_is_in(sqlite_db db)
+{
+    if (db == NULL) return false;
+    return db->_in;
 }
 
 void sqlite_delloc(SqliteRef sqlite)

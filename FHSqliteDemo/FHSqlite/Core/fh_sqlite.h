@@ -23,6 +23,7 @@ typedef _fh_sqlite* SqliteRef;
 
 typedef struct {
     bool _in; // Whether it is a write connection.
+    bool _already_opened;
     pthread_t _thread;
     sqlite3* _db;
     const char* _sqlite_path;
@@ -34,6 +35,8 @@ typedef _sqlite_db* sqlite_db;
 SqliteRef sqlite_initialize(const char* sqlite_path);
 
 sqlite_db db_get_current(SqliteRef sqlite);
+
+bool db_is_in(sqlite_db db);
 
 void sqlite_delloc(SqliteRef sqlite);
 
