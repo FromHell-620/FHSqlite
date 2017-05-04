@@ -77,26 +77,16 @@ sqlite_db sqlite_open(SqliteRef sqlite)
 {
     if (sqlite == NULL) return NULL;
     sqlite_db _db = (sqlite_db)CFDictionaryGetValue(sqlite->_db_cache, pthread_self());
-    if (_db &&_db->_already_opened == false) {
-        if (sqlite3_open(sqlite->_sqlite_path, &_db->_db) == SQLITE_OK) {
-            _db->_already_opened = true;
-            return _db;
-        }else {
-            sqlite3_close(_db->_db);
-            return NULL;
-        }
-    }
+    if (_db ) return _db;
     
     _db = sqlite_db_initialize(sqlite, pthread_self());
     
     sqlite3* db = NULL;
     if (sqlite3_open(sqlite->_sqlite_path, &db) == SQLITE_OK) {
         _db->_db = db;
-        _db->_already_opened = true;
         CFDictionarySetValue(sqlite->_db_cache, pthread_self(), _db);
     }else {
-        sqlite3_close(db);
-        return NULL;
+        sqlite_db_delloc(_db);
     }
     return _db;
 }
