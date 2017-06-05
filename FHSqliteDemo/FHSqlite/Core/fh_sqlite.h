@@ -37,6 +37,8 @@ sqlite_db db_get_current(SqliteRef sqlite);
 
 bool db_is_in(sqlite_db db);
 
+sqlite_db sqlite_open(SqliteRef sqlite);
+
 void sqlite_delloc(SqliteRef sqlite);
 
 void sqlite_db_delloc(sqlite_db _db);

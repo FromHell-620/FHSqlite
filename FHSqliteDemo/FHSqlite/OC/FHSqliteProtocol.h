@@ -1,0 +1,64 @@
+//
+//  FHSqliteProtocol.h
+//  FHSqliteDemo
+//
+//  Created by 李浩 on 2017/6/5.
+//  Copyright © 2017年 FromHell. All rights reserved.
+//
+
+#import <Foundation/Foundation.h>
+
+NS_ASSUME_NONNULL_BEGIN
+
+typedef NS_OPTIONS(NSInteger, FHSqliteConstraintState) {
+    FHSqliteConstraintStateNonNull = 1<<2,
+    FHSqliteConstraintStateUnique = 1<<3,
+    FHSqliteConstraintStatePrimaryKey = 1<<4,
+    FHSqliteConstraintStateAutoIncrement = 1<<5,
+    FHSqliteConstraintStateDefaultValue = 1<<6,
+    FHSqliteConstraintStateForeignKey = 1<<7
+};
+
+@interface FHSqliteConstraintDefault : NSObject
+
+@end
+
+@interface FHSqliteConstraintDefaultInt : FHSqliteConstraintDefault
+
+@property (nonatomic,assign) int value;
+
+@end
+
+
+
+@interface FHSqliteConstraint : NSObject
+
+@property (nonatomic,copy) NSString *columnName;
+
+@property (nonatomic,assign) FHSqliteConstraintState constraintState;
+
+@property (nonatomic,strong,nullable) FHSqliteConstraintDefault *defaultValue;
+
++ (instancetype)constraintWithColumnName:(NSString *)columnName
+                                   state:(FHSqliteConstraintState)state;
+
+@end
+
+@protocol FHSqliteProtocol <NSObject>
+
+@optional
+
+@property (nonatomic,copy,class,nullable) NSString *tableName;
+
+@property (nonatomic,copy,class,nullable) NSString *primaryKey;
+
+@property (nonatomic,copy,class,nullable) NSArray<NSString *> *columnNames;
+
+@property (nonatomic,copy,class,nullable) NSArray<NSString *> *indexNames;
+
+@property (nonatomic,copy,class,nullable) NSArray<FHSqliteConstraint *> *constraints;
+
+@end
+
+NS_ASSUME_NONNULL_END
+
