@@ -21,15 +21,23 @@ typedef NS_OPTIONS(NSInteger, FHSqliteConstraintState) {
 
 @interface FHSqliteConstraintDefault : NSObject
 
++ (instancetype)defaultWithInt:(int)i;
+
++ (instancetype)defaultWithFloat:(float)f;
+
++ (instancetype)defaultWithCString:(const char *)cStr;
+
++ (instancetype)defaultWithObject:(NSObject *)obj;
+
+- (int)intValue;
+
+- (float)floatValue;
+
+- (const char *)cStringValue;
+
+- (NSObject *)objectValue;
+
 @end
-
-@interface FHSqliteConstraintDefaultInt : FHSqliteConstraintDefault
-
-@property (nonatomic,assign) int value;
-
-@end
-
-
 
 @interface FHSqliteConstraint : NSObject
 
