@@ -123,6 +123,7 @@ FHPropertyObjectEncodingType FHPropertyObjectEncodingTypeWithType(const char *ty
 @implementation FHClassInfo
 
 @synthesize propertys = _propertys;
+@synthesize propertysExceptReadonly = _propertysExceptReadonly;
 @synthesize superClassPropertys = _superClassPropertys;
 @synthesize protocols = _protocols;
 
@@ -147,6 +148,20 @@ FHPropertyObjectEncodingType FHPropertyObjectEncodingTypeWithType(const char *ty
         _propertys = [self propertyListWithClass:self.cls];
     }
     return _propertys;
+}
+
+- (NSArray<NSString *> *)propertysExceptReadonly {
+    if (!_propertysExceptReadonly) {
+        NSMutableArray *new = [NSMutableArray array];
+        [self.propertys enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+            FHPropertyInfo *info = [self.propertysInfo objectForKey:obj];
+            if (info.typeEncoding != FHPropertyEncodingTypeReadOnly) {
+                [new addObject:obj];
+            }
+        }];
+        _propertysExceptReadonly = [new copy];
+    }
+    return _propertysExceptReadonly;
 }
 
 - (NSArray<NSString *> *)superClassPropertys {

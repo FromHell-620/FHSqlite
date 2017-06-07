@@ -68,6 +68,8 @@ typedef NS_ENUM(NSInteger,FHPropertyObjectEncodingType) {
 
 @property (nonatomic,copy,readonly) NSArray<NSString *> *propertys;
 
+@property (nonatomic,copy,readonly) NSArray<NSString *> *propertysExceptReadonly;
+
 @property (nonatomic,copy,readonly) NSArray<NSString *> *superClassPropertys;
 
 @property (nonatomic,copy,readonly) NSArray<NSString *> *protocols;
