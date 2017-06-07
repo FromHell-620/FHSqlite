@@ -16,6 +16,7 @@
 		883EA45A1EA5C2550095F9A6 /* FHSqliteDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 883EA4591EA5C2550095F9A6 /* FHSqliteDemoTests.m */; };
 		883EA4651EA5C2550095F9A6 /* FHSqliteDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 883EA4641EA5C2550095F9A6 /* FHSqliteDemoUITests.m */; };
 		883EA4771EA5C5500095F9A6 /* fh_sqlite.c in Sources */ = {isa = PBXBuildFile; fileRef = 883EA4751EA5C5500095F9A6 /* fh_sqlite.c */; };
+		C937990B1EE8487A000F2F9C /* SQLGenerator.c in Sources */ = {isa = PBXBuildFile; fileRef = C93799091EE8487A000F2F9C /* SQLGenerator.c */; };
 		C94998441EE59E2100BAAE1D /* FHClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C94998431EE59E2100BAAE1D /* FHClassInfo.m */; };
 		C94998481EE59EC900BAAE1D /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C94998471EE59EC900BAAE1D /* libsqlite3.tbd */; };
 		C949984A1EE5A0C600BAAE1D /* FHSqliteProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = C94998491EE5A0C600BAAE1D /* FHSqliteProtocol.m */; };
@@ -58,6 +59,8 @@
 		883EA4731EA5C4780095F9A6 /* FMSqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMSqlite.h; sourceTree = "<group>"; };
 		883EA4751EA5C5500095F9A6 /* fh_sqlite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fh_sqlite.c; sourceTree = "<group>"; };
 		883EA4761EA5C5500095F9A6 /* fh_sqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fh_sqlite.h; sourceTree = "<group>"; };
+		C93799091EE8487A000F2F9C /* SQLGenerator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = SQLGenerator.c; sourceTree = "<group>"; };
+		C937990A1EE8487A000F2F9C /* SQLGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SQLGenerator.h; sourceTree = "<group>"; };
 		C94998421EE59E2100BAAE1D /* FHClassInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHClassInfo.h; sourceTree = "<group>"; };
 		C94998431EE59E2100BAAE1D /* FHClassInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHClassInfo.m; sourceTree = "<group>"; };
 		C94998451EE59E3B00BAAE1D /* FHSqliteProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHSqliteProtocol.h; sourceTree = "<group>"; };
@@ -170,6 +173,8 @@
 			children = (
 				883EA4751EA5C5500095F9A6 /* fh_sqlite.c */,
 				883EA4761EA5C5500095F9A6 /* fh_sqlite.h */,
+				C93799091EE8487A000F2F9C /* SQLGenerator.c */,
+				C937990A1EE8487A000F2F9C /* SQLGenerator.h */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -329,6 +334,7 @@
 				883EA4471EA5C2550095F9A6 /* ViewController.m in Sources */,
 				C94998441EE59E2100BAAE1D /* FHClassInfo.m in Sources */,
 				883EA4441EA5C2550095F9A6 /* AppDelegate.m in Sources */,
+				C937990B1EE8487A000F2F9C /* SQLGenerator.c in Sources */,
 				883EA4411EA5C2550095F9A6 /* main.m in Sources */,
 				883EA4771EA5C5500095F9A6 /* fh_sqlite.c in Sources */,
 				C949984A1EE5A0C600BAAE1D /* FHSqliteProtocol.m in Sources */,
