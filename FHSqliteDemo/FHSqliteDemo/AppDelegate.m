@@ -7,7 +7,9 @@
 //
 
 #import "AppDelegate.h"
-#import <pthread/pthread.h>
+#import "NSObject+SQLGenerator.h"
+#import "Test.h"
+
 @interface AppDelegate ()
 
 @end
@@ -16,6 +18,8 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    NSString *str = [Test sql_initializeTable];
+    NSLog(@"%@",str);
     // Override point for customization after application launch.
     return YES;
 }

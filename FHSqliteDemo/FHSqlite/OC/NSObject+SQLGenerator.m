@@ -96,7 +96,13 @@ FOUNDATION_STATIC_INLINE NSString * SqliteTypeFromPropertyType(FHPropertyInfo *i
         FHSqliteConstraint *constraint = [constraints objectForKey:obj];
         NSString *sub_sql = columnItemSql(obj,column_type,constraint);
         if (sub_sql == nil) return ;
-        [sql appendFormat:@"(%@,);",sub_sql];
+        if (idx == 0) {
+            [sql appendString:@"("];
+        }
+        [sql appendFormat:@"%@,",sub_sql];
+        if (idx == columnNames.count-1) {
+            [sql appendString:@");"];
+        }
     }];
     [sql deleteCharactersInRange:NSMakeRange(sql.length - 3, 1)];
     return [sql copy];
