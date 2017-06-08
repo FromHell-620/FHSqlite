@@ -33,12 +33,14 @@
     }
     if (columnNames == nil || columnNames.count == 0) return nil;
     
-    NSArray<FHSqliteConstraint *> *constraints = nil;
+    NSDictionary<NSString *,FHSqliteConstraint *> *constraints = nil;
     if (class_respondsToSelector(self, @selector(constraints))) {
         constraints = [cls constraints];
     }
     NSMutableString *sql = [NSMutableString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@",tableName];
-    
+    [columnNames enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+    }];
     return [sql copy];
 }
 

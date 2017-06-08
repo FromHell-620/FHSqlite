@@ -123,10 +123,7 @@
 
 @implementation FHSqliteConstraint
 
-+ (instancetype)constraintWithColumnName:(NSString *)columnName
-                                   state:(FHSqliteConstraintState)state {
-    FHSqliteConstraint *constraint = [[FHSqliteConstraint alloc] init];
-    constraint.columnName = columnName;
++ (instancetype)constraintWithstate:(FHSqliteConstraintState)state {    FHSqliteConstraint *constraint = [[FHSqliteConstraint alloc] init];
     constraint.constraintState = state;
     return constraint;
 }

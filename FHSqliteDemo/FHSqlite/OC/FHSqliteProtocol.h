@@ -41,14 +41,11 @@ typedef NS_OPTIONS(NSInteger, FHSqliteConstraintState) {
 
 @interface FHSqliteConstraint : NSObject
 
-@property (nonatomic,copy) NSString *columnName;
-
 @property (nonatomic,assign) FHSqliteConstraintState constraintState;
 
 @property (nonatomic,strong,nullable) FHSqliteConstraintDefault *defaultValue;
 
-+ (instancetype)constraintWithColumnName:(NSString *)columnName
-                                   state:(FHSqliteConstraintState)state;
++ (instancetype)constraintWithstate:(FHSqliteConstraintState)state;
 
 @end
 
@@ -64,7 +61,7 @@ typedef NS_OPTIONS(NSInteger, FHSqliteConstraintState) {
 
 @property (nonatomic,copy,class,nullable) NSArray<NSString *> *indexNames;
 
-@property (nonatomic,copy,class,nullable) NSArray<FHSqliteConstraint *> *constraints;
+@property (nonatomic,copy,class,nullable) NSDictionary<NSString *,FHSqliteConstraint *> *constraints;
 
 @end
 
