@@ -10,4 +10,6 @@
 
 @interface NSObject (SQLGenerator)
 
++ (NSString *)sql_initializeTable;
+
 @end
