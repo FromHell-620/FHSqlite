@@ -13,6 +13,43 @@
 
 @implementation NSObject (SQLGenerator)
 
+FOUNDATION_STATIC_INLINE NSString * SqliteTypeFromPropertyType(FHPropertyInfo *info) {
+    switch (info.typeEncoding) {
+        case FHPropertyEncodingTypeInt:
+            return @"INT";
+        case FHPropertyEncodingTypeBool:
+            return @"BOOL";
+        case FHPropertyEncodingTypeLong:
+            return @"LONG";
+        case FHPropertyEncodingTypeFloat:
+            return @"FLOAT";
+        case FHPropertyEncodingTypeDouble:
+            return @"DOUBLE";
+        case FHPropertyEncodingTypeCString:
+            return @"TEXT";
+        case FHPropertyEncodingTypeObject: {
+            switch (info.objectTypeEncoding) {
+                case FHPropertyObjectEncodingTypeNSString:
+                case FHPropertyObjectEncodingTypeNSURL:
+                case FHPropertyObjectEncodingTypeNSDate:
+                case FHPropertyObjectEncodingTypeNSNumber:
+                    return @"TEXT";
+                case FHPropertyObjectEncodingTypeNSData:
+                case FHPropertyObjectEncodingTypeNSArray:
+                case FHPropertyObjectEncodingTypeUIImage:
+                case FHPropertyObjectEncodingTypeNSDictionary:
+                    return @"BLOB";
+                    
+                default:
+                    return nil;
+            }
+        }
+            
+        default:
+            return nil;
+    }
+}
+
 + (NSString *)sql_initializeTable {
     Class<FHSqliteProtocol> cls = self;
     NSString *tableName = nil;
@@ -38,7 +75,29 @@
         constraints = [cls constraints];
     }
     NSMutableString *sql = [NSMutableString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@",tableName];
+    
+    NSString *(^columnItemSql)(NSString *,NSString *,FHSqliteConstraint *) = ^NSString *(NSString *columnName,NSString *columnType,FHSqliteConstraint *constraint) {
+        NSMutableString *item_sql = [NSMutableString stringWithFormat:@"%@ %@",columnName,columnType];
+        if (FHSqliteConstraintStatePrimaryKey & constraint.constraintState) {
+            [item_sql appendString:@" PRIMARY KEY"];
+        }
+        if (FHSqliteConstraintStateNonNull & constraint.constraintState) {
+            [item_sql appendString:@" NOT NULL"];
+        }
+        if (FHSqliteConstraintStateUnique & constraint.constraintState) {
+            [item_sql appendString:@" UNIQUE"];
+        }
+        
+        
+    }
     [columnNames enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        FHPropertyInfo *info = [classInfo.propertysInfo objectForKey:obj];
+        NSString *column_type = SqliteTypeFromPropertyType(info);
+        FHSqliteConstraint *constraint = [constraints objectForKey:obj];
+        if (FHSqliteConstraintStatePrimaryKey&constraint.constraintState) {
+            <#statements#>
+        }
+        [sql appendFormat:@"()"]
         
     }];
     return [sql copy];
