@@ -77,6 +77,7 @@ FOUNDATION_STATIC_INLINE NSString * SqliteTypeFromPropertyType(FHPropertyInfo *i
     NSMutableString *sql = [NSMutableString stringWithFormat:@"CREATE TABLE IF NOT EXISTS %@",tableName];
     
     NSString *(^columnItemSql)(NSString *,NSString *,FHSqliteConstraint *) = ^NSString *(NSString *columnName,NSString *columnType,FHSqliteConstraint *constraint) {
+        if (columnType == nil) return nil;
         NSMutableString *item_sql = [NSMutableString stringWithFormat:@"%@ %@",columnName,columnType];
         if (FHSqliteConstraintStatePrimaryKey & constraint.constraintState) {
             [item_sql appendString:@" PRIMARY KEY"];
@@ -87,19 +88,17 @@ FOUNDATION_STATIC_INLINE NSString * SqliteTypeFromPropertyType(FHPropertyInfo *i
         if (FHSqliteConstraintStateUnique & constraint.constraintState) {
             [item_sql appendString:@" UNIQUE"];
         }
-        
-        
-    }
+        return [item_sql copy];
+    };
     [columnNames enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FHPropertyInfo *info = [classInfo.propertysInfo objectForKey:obj];
         NSString *column_type = SqliteTypeFromPropertyType(info);
         FHSqliteConstraint *constraint = [constraints objectForKey:obj];
-        if (FHSqliteConstraintStatePrimaryKey&constraint.constraintState) {
-            <#statements#>
-        }
-        [sql appendFormat:@"()"]
-        
+        NSString *sub_sql = columnItemSql(obj,column_type,constraint);
+        if (sub_sql == nil) return ;
+        [sql appendFormat:@"(%@,);",sub_sql];
     }];
+    [sql deleteCharactersInRange:NSMakeRange(sql.length - 3, 1)];
     return [sql copy];
 }
 

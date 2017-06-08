@@ -20,6 +20,7 @@
 		C94998481EE59EC900BAAE1D /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C94998471EE59EC900BAAE1D /* libsqlite3.tbd */; };
 		C949984A1EE5A0C600BAAE1D /* FHSqliteProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = C94998491EE5A0C600BAAE1D /* FHSqliteProtocol.m */; };
 		C99F6EB81EE99300004CC51A /* NSObject+SQLGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C99F6EB71EE99300004CC51A /* NSObject+SQLGenerator.m */; };
+		C99F6EBB1EE9AAA6004CC51A /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = C99F6EBA1EE9AAA6004CC51A /* Test.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,8 @@
 		C94998491EE5A0C600BAAE1D /* FHSqliteProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHSqliteProtocol.m; sourceTree = "<group>"; };
 		C99F6EB61EE99300004CC51A /* NSObject+SQLGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+SQLGenerator.h"; sourceTree = "<group>"; };
 		C99F6EB71EE99300004CC51A /* NSObject+SQLGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+SQLGenerator.m"; sourceTree = "<group>"; };
+		C99F6EB91EE9AAA6004CC51A /* Test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Test.h; sourceTree = "<group>"; };
+		C99F6EBA1EE9AAA6004CC51A /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +126,8 @@
 				883EA4431EA5C2550095F9A6 /* AppDelegate.m */,
 				883EA4451EA5C2550095F9A6 /* ViewController.h */,
 				883EA4461EA5C2550095F9A6 /* ViewController.m */,
+				C99F6EB91EE9AAA6004CC51A /* Test.h */,
+				C99F6EBA1EE9AAA6004CC51A /* Test.m */,
 				883EA4481EA5C2550095F9A6 /* Main.storyboard */,
 				883EA44B1EA5C2550095F9A6 /* Assets.xcassets */,
 				883EA44D1EA5C2550095F9A6 /* LaunchScreen.storyboard */,
@@ -332,6 +337,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				883EA4471EA5C2550095F9A6 /* ViewController.m in Sources */,
+				C99F6EBB1EE9AAA6004CC51A /* Test.m in Sources */,
 				C94998441EE59E2100BAAE1D /* FHClassInfo.m in Sources */,
 				883EA4441EA5C2550095F9A6 /* AppDelegate.m in Sources */,
 				883EA4411EA5C2550095F9A6 /* main.m in Sources */,

@@ -15,8 +15,8 @@ typedef NS_OPTIONS(NSInteger, FHSqliteConstraintState) {
     FHSqliteConstraintStateUnique = 1<<3,
     FHSqliteConstraintStatePrimaryKey = 1<<4,
     FHSqliteConstraintStateAutoIncrement = 1<<5,
-    FHSqliteConstraintStateDefaultValue = 1<<6,
-    FHSqliteConstraintStateForeignKey = 1<<7
+    FHSqliteConstraintStateDefaultValue = 1<<6,//Unimplemented
+    FHSqliteConstraintStateForeignKey = 1<<7//Unimplemented
 };
 
 @interface FHSqliteConstraintDefault : NSObject
