@@ -108,4 +108,10 @@ FOUNDATION_STATIC_INLINE NSString * SqliteTypeFromPropertyType(FHPropertyInfo *i
     return [sql copy];
 }
 
++ (NSString *)sql_insertWithMdoels:(NSArray *)models {
+    [models enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        
+    }];
+}
+
 @end
