@@ -50,26 +50,35 @@ FOUNDATION_STATIC_INLINE NSString * SqliteTypeFromPropertyType(FHPropertyInfo *i
     }
 }
 
-+ (NSString *)sql_initializeTable {
++ (NSString *)__tableName {
     Class<FHSqliteProtocol> cls = self;
     NSString *tableName = nil;
-    if (class_respondsToSelector(self, @selector(tableName))) {
+    if (class_respondsToSelector(cls, @selector(tableName))) {
         tableName = [cls tableName];
     }
-    if (tableName.length <= 0) {
-        tableName = NSStringFromClass(self);
+    if (!tableName) tableName = NSStringFromClass(cls);
+    return tableName;
+}
+
++ (NSArray<NSString *> *)__columnNames {
+    Class<FHSqliteProtocol> cls = self;
+    NSArray<NSString *> *columnName = nil;
+    if (class_respondsToSelector(cls, @selector(columnNames))) {
+        columnName = [cls columnNames];
     }
-    FHClassInfo *classInfo = [FHClassInfo infoWithClass:self];
-    if (classInfo == nil) return nil;
-    NSArray<NSString *> *columnNames = nil;
-    if (class_respondsToSelector(self, @selector(columnNames))) {
-        columnNames = [cls columnNames];
+    if (!columnName) {
+        FHClassInfo *info = [FHClassInfo infoWithClass:cls];
+        columnName = info.propertysExceptReadonly;
     }
-    if (columnNames.count == 0) {
-        columnNames = classInfo.propertysExceptReadonly;
-    }
+    return columnName;
+}
+
++ (NSString *)sql_initializeTable {
+    NSString *tableName = [self __tableName];
+    NSArray<NSString *> *columnNames = [self __columnNames];
     if (columnNames == nil || columnNames.count == 0) return nil;
     
+    Class<FHSqliteProtocol> cls = self;
     NSDictionary<NSString *,FHSqliteConstraint *> *constraints = nil;
     if (class_respondsToSelector(self, @selector(constraints))) {
         constraints = [cls constraints];
@@ -88,8 +97,14 @@ FOUNDATION_STATIC_INLINE NSString * SqliteTypeFromPropertyType(FHPropertyInfo *i
         if (FHSqliteConstraintStateUnique & constraint.constraintState) {
             [item_sql appendString:@" UNIQUE"];
         }
+        
+        if (FHSqliteConstraintStateAutoIncrement & constraint.constraintState) {
+            [item_sql appendString:@" AUTOINCREMENT"];
+        }
         return [item_sql copy];
     };
+    
+    FHClassInfo *classInfo = [FHClassInfo infoWithClass:self];
     [columnNames enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
         FHPropertyInfo *info = [classInfo.propertysInfo objectForKey:obj];
         NSString *column_type = SqliteTypeFromPropertyType(info);
@@ -108,8 +123,17 @@ FOUNDATION_STATIC_INLINE NSString * SqliteTypeFromPropertyType(FHPropertyInfo *i
     return [sql copy];
 }
 
+- (NSString *)sql_insert {
+    NSString *tableName = [[self class] __tableName];
+    NSArray<NSString *> *columnNames = [[self class] __columnNames];
+    NSMutableString *sql = [NSMutableString stringWithFormat:@"insert into %@",tableName];
+    
+}
+
 + (NSString *)sql_insertWithMdoels:(NSArray *)models {
+    NSMutableString *sql = [NSMutableString string];
     [models enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        Class<FHSqliteProtocol> cls = [obj class];
         
     }];
 }
