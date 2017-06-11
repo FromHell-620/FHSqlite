@@ -124,18 +124,31 @@ FOUNDATION_STATIC_INLINE NSString * SqliteTypeFromPropertyType(FHPropertyInfo *i
 }
 
 - (NSString *)sql_insert {
-    NSString *tableName = [[self class] __tableName];
-    NSArray<NSString *> *columnNames = [[self class] __columnNames];
-    NSMutableString *sql = [NSMutableString stringWithFormat:@"insert into %@",tableName];
-    
+    return [self sql_insertOncolumns:[[self class] __columnNames]];
+}
+
+- (NSString *)sql_insertOncolumns:(NSArray<NSString *> *)columns {
+    NSAssert(columns.count>0, @"columns长度必须大于0");
+    NSMutableString *sql = [NSMutableString stringWithFormat:@"insert into %@",[[self class] __tableName]];
+    NSMutableString *key = [NSMutableString string];
+    NSMutableString *value = [NSMutableString string];
+    [columns enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        [key appendFormat:@"%@,",obj];
+        [value appendFormat:@":%@,",obj];
+    }];
+    [key deleteCharactersInRange:NSMakeRange(key.length-1, 1)];
+    [value deleteCharactersInRange:NSMakeRange(value.length-1, 1)];
+    [sql appendFormat:@" (%@) values (%@);",key,value];
+    return [sql copy];
 }
 
 + (NSString *)sql_insertWithMdoels:(NSArray *)models {
     NSMutableString *sql = [NSMutableString string];
     [models enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        Class<FHSqliteProtocol> cls = [obj class];
-        
+        NSString *sub_sql = [obj sql_insert];
+        [sql appendString:sub_sql];
     }];
+    return [sql copy];
 }
 
 @end

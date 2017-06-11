@@ -12,6 +12,10 @@
 
 + (NSString *)sql_initializeTable;
 
+- (NSString *)sql_insert;
+
+- (NSString *)sql_insertOncolumns:(NSArray<NSString *> *)columns;
+
 + (NSString *)sql_insertWithMdoels:(NSArray *)models;
 
 @end
