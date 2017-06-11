@@ -22,7 +22,7 @@
     NSLog(@"%@",str);
     
     Test* test = [[Test alloc] init];
-    NSLog(@"%@  %@",[test sql_insert],[test sql_insertOncolumns:@[@"str",@"number",@"b_r"]]);
+    NSLog(@"%@  %@",[test sql_insert],[test sql_insertOnColumns:@[@"str",@"number",@"b_r"]]);
     
     NSMutableArray *arr = [NSMutableArray array];
     for (int i=0; i<10; i++) {

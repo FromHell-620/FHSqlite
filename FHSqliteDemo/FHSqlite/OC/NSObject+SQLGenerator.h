@@ -14,8 +14,13 @@
 
 - (NSString *)sql_insert;
 
-- (NSString *)sql_insertOncolumns:(NSArray<NSString *> *)columns;
+- (NSString *)sql_insertOnColumns:(NSArray<NSString *> *)columns;
 
 + (NSString *)sql_insertWithMdoels:(NSArray *)models;
+
+- (NSString *)sql_updateOnColumns:(NSArray<NSString *> *)columns;
+
+- (NSString *)sql_updateOnColumns:(NSArray<NSString *> *)columns
+                        predicate:(NSPredicate *)predicate;
 
 @end

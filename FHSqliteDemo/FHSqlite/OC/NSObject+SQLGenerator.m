@@ -10,6 +10,7 @@
 #import "FHSqliteProtocol.h"
 #import "FHClassInfo.h"
 #import <objc/runtime.h>
+#import <objc/message.h>
 
 @implementation NSObject (SQLGenerator)
 
@@ -124,10 +125,10 @@ FOUNDATION_STATIC_INLINE NSString * SqliteTypeFromPropertyType(FHPropertyInfo *i
 }
 
 - (NSString *)sql_insert {
-    return [self sql_insertOncolumns:[[self class] __columnNames]];
+    return [self sql_insertOnColumns:[[self class] __columnNames]];
 }
 
-- (NSString *)sql_insertOncolumns:(NSArray<NSString *> *)columns {
+- (NSString *)sql_insertOnColumns:(NSArray<NSString *> *)columns {
     NSAssert(columns.count>0, @"columns长度必须大于0");
     NSMutableString *sql = [NSMutableString stringWithFormat:@"insert into %@",[[self class] __tableName]];
     NSMutableString *key = [NSMutableString string];
@@ -148,6 +149,55 @@ FOUNDATION_STATIC_INLINE NSString * SqliteTypeFromPropertyType(FHPropertyInfo *i
         NSString *sub_sql = [obj sql_insert];
         [sql appendString:sub_sql];
     }];
+    return [sql copy];
+}
+
+- (NSString *)sql_updateOnColumns:(NSArray<NSString *> *)columns {
+    NSString *primaryKey = nil;
+    Class<FHSqliteProtocol> cls = [self class];
+    if (class_respondsToSelector(cls, @selector(primaryKey))) {
+        primaryKey = [cls primaryKey];
+    }
+    if (primaryKey == nil) return nil;
+    FHPropertyInfo *info = [[FHClassInfo infoWithClass:cls].propertysInfo objectForKey:primaryKey];
+    if (info == nil) return nil;
+    NSPredicate *predicate = nil;
+    SEL sel = sel_registerName(primaryKey.UTF8String);
+    
+    switch (info.typeEncoding) {
+        case FHPropertyEncodingTypeInt:
+            predicate = [NSPredicate predicateWithFormat:@"%@ = %d",primaryKey,((int(*)(id,SEL))objc_msgSend)(self,sel)];
+            break;
+        case FHPropertyEncodingTypeLong:
+            predicate = [NSPredicate predicateWithFormat:@"%@ = %ld",primaryKey,((NSInteger(*)(id,SEL))objc_msgSend)(self,sel)];
+            break;
+        case FHPropertyEncodingTypeFloat:
+        case FHPropertyEncodingTypeDouble:
+            predicate = [NSPredicate predicateWithFormat:@"%@ = %f",primaryKey,((float(*)(id,SEL))objc_msgSend)(self,sel)];
+            break;
+        case FHPropertyEncodingTypeCString:
+            predicate = [NSPredicate predicateWithFormat:@"%@ = %s",primaryKey,((char *(*)(id,SEL))objc_msgSend)(self,sel)];
+            break;
+        case FHPropertyEncodingTypeObject:
+            predicate = [NSPredicate predicateWithFormat:@"%@ = %@",primaryKey,((id(*)(id,SEL))objc_msgSend)(self,sel)];
+            break;
+        default:
+            break;
+    }
+    NSParameterAssert(predicate);
+    return [self sql_updateOnColumns:columns predicate:predicate];
+}
+
+- (NSString *)sql_updateOnColumns:(NSArray<NSString *> *)columns
+                        predicate:(NSPredicate *)predicate {
+    NSAssert(columns.count>0, @"columns长度必须大于0");
+    NSMutableString *sql = [NSMutableString stringWithFormat:@"update %@ set ",[[self class] __tableName]];
+    [columns enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
+        NSString *sub = [NSString stringWithFormat:@"%@ = :%@,",obj,obj];
+        [sql appendString:sub];
+    }];
+    [sql deleteCharactersInRange:NSMakeRange(sql.length-1, 1)];
+    [sql appendString:predicate.predicateFormat];
     return [sql copy];
 }
 
