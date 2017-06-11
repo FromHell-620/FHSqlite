@@ -152,6 +152,14 @@ FOUNDATION_STATIC_INLINE NSString * SqliteTypeFromPropertyType(FHPropertyInfo *i
     return [sql copy];
 }
 
+- (NSString *)sql_update {
+    return [self sql_updateOnColumns:[[self class] __columnNames]];
+}
+
+- (NSString *)sql_updateWithPredicate:(NSPredicate *)predicate {
+    return [self sql_updateOnColumns:[[self class] __columnNames] predicate:predicate];
+}
+
 - (NSString *)sql_updateOnColumns:(NSArray<NSString *> *)columns {
     NSString *primaryKey = nil;
     Class<FHSqliteProtocol> cls = [self class];
@@ -179,7 +187,17 @@ FOUNDATION_STATIC_INLINE NSString * SqliteTypeFromPropertyType(FHPropertyInfo *i
             predicate = [NSPredicate predicateWithFormat:@"%@ = %s",primaryKey,((char *(*)(id,SEL))objc_msgSend)(self,sel)];
             break;
         case FHPropertyEncodingTypeObject:
-            predicate = [NSPredicate predicateWithFormat:@"%@ = %@",primaryKey,((id(*)(id,SEL))objc_msgSend)(self,sel)];
+            if (info.objectTypeEncoding == FHPropertyObjectEncodingTypeNSString||info.objectTypeEncoding == FHPropertyObjectEncodingTypeNSNumber) {
+                predicate = [NSPredicate predicateWithFormat:@"%@ = %@",primaryKey,((id(*)(id,SEL))objc_msgSend)(self,sel)];
+            }else if (info.objectTypeEncoding == FHPropertyObjectEncodingTypeNSURL) {
+                NSURL *URL = ((NSURL*(*)(id,SEL))objc_msgSend)(self,sel);
+                predicate = [NSPredicate predicateWithFormat:@"%@ = %@",primaryKey,URL.absoluteString];
+            }else if (info.objectTypeEncoding == FHPropertyObjectEncodingTypeNSDate) {
+                NSDate *date = ((NSDate*(*)(id,SEL))objc_msgSend)(self,sel);
+                NSDateFormatter *formatter = [NSDateFormatter new];
+                formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+                predicate = [NSPredicate predicateWithFormat:@"%@ = %@",primaryKey,[formatter stringFromDate:date]];
+            }
             break;
         default:
             break;

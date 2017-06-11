@@ -18,6 +18,10 @@
 
 + (NSString *)sql_insertWithMdoels:(NSArray *)models;
 
+- (NSString *)sql_update;
+
+- (NSString *)sql_updateWithPredicate:(NSPredicate *)predicate;
+
 - (NSString *)sql_updateOnColumns:(NSArray<NSString *> *)columns;
 
 - (NSString *)sql_updateOnColumns:(NSArray<NSString *> *)columns
