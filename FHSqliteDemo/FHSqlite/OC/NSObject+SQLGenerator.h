@@ -27,4 +27,8 @@
 - (NSString *)sql_updateOnColumns:(NSArray<NSString *> *)columns
                         predicate:(NSPredicate *)predicate;
 
+- (NSString *)sql_delete;
+
++ (NSString *)sql_deleteWithPredicate:(NSPredicate *)predicate;
+
 @end

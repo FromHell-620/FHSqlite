@@ -51,6 +51,46 @@ FOUNDATION_STATIC_INLINE NSString * SqliteTypeFromPropertyType(FHPropertyInfo *i
     }
 }
 
+FOUNDATION_STATIC_INLINE NSPredicate *predicateWithPrimaryKey(id self,NSString *primaryKey) {
+    Class<FHSqliteProtocol> cls = [self class];
+    FHPropertyInfo *info = [[FHClassInfo infoWithClass:cls].propertysInfo objectForKey:primaryKey];
+    if (info == nil) return nil;
+    NSPredicate *predicate = nil;
+    SEL sel = sel_registerName(primaryKey.UTF8String);
+    
+    switch (info.typeEncoding) {
+        case FHPropertyEncodingTypeInt:
+            predicate = [NSPredicate predicateWithFormat:@"%@ = %d",primaryKey,((int(*)(id,SEL))objc_msgSend)(self,sel)];
+            break;
+        case FHPropertyEncodingTypeLong:
+            predicate = [NSPredicate predicateWithFormat:@"%@ = %ld",primaryKey,((NSInteger(*)(id,SEL))objc_msgSend)(self,sel)];
+            break;
+        case FHPropertyEncodingTypeFloat:
+        case FHPropertyEncodingTypeDouble:
+            predicate = [NSPredicate predicateWithFormat:@"%@ = %f",primaryKey,((float(*)(id,SEL))objc_msgSend)(self,sel)];
+            break;
+        case FHPropertyEncodingTypeCString:
+            predicate = [NSPredicate predicateWithFormat:@"%@ = %s",primaryKey,((char *(*)(id,SEL))objc_msgSend)(self,sel)];
+            break;
+        case FHPropertyEncodingTypeObject:
+            if (info.objectTypeEncoding == FHPropertyObjectEncodingTypeNSString||info.objectTypeEncoding == FHPropertyObjectEncodingTypeNSNumber) {
+                predicate = [NSPredicate predicateWithFormat:@"%@ = %@",primaryKey,((id(*)(id,SEL))objc_msgSend)(self,sel)];
+            }else if (info.objectTypeEncoding == FHPropertyObjectEncodingTypeNSURL) {
+                NSURL *URL = ((NSURL*(*)(id,SEL))objc_msgSend)(self,sel);
+                predicate = [NSPredicate predicateWithFormat:@"%@ = %@",primaryKey,URL.absoluteString];
+            }else if (info.objectTypeEncoding == FHPropertyObjectEncodingTypeNSDate) {
+                NSDate *date = ((NSDate*(*)(id,SEL))objc_msgSend)(self,sel);
+                NSDateFormatter *formatter = [NSDateFormatter new];
+                formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
+                predicate = [NSPredicate predicateWithFormat:@"%@ = %@",primaryKey,[formatter stringFromDate:date]];
+            }
+            break;
+        default:
+            break;
+    }
+    return predicate;
+}
+
 + (NSString *)__tableName {
     Class<FHSqliteProtocol> cls = self;
     NSString *tableName = nil;
@@ -167,41 +207,7 @@ FOUNDATION_STATIC_INLINE NSString * SqliteTypeFromPropertyType(FHPropertyInfo *i
         primaryKey = [cls primaryKey];
     }
     if (primaryKey == nil) return nil;
-    FHPropertyInfo *info = [[FHClassInfo infoWithClass:cls].propertysInfo objectForKey:primaryKey];
-    if (info == nil) return nil;
-    NSPredicate *predicate = nil;
-    SEL sel = sel_registerName(primaryKey.UTF8String);
-    
-    switch (info.typeEncoding) {
-        case FHPropertyEncodingTypeInt:
-            predicate = [NSPredicate predicateWithFormat:@"%@ = %d",primaryKey,((int(*)(id,SEL))objc_msgSend)(self,sel)];
-            break;
-        case FHPropertyEncodingTypeLong:
-            predicate = [NSPredicate predicateWithFormat:@"%@ = %ld",primaryKey,((NSInteger(*)(id,SEL))objc_msgSend)(self,sel)];
-            break;
-        case FHPropertyEncodingTypeFloat:
-        case FHPropertyEncodingTypeDouble:
-            predicate = [NSPredicate predicateWithFormat:@"%@ = %f",primaryKey,((float(*)(id,SEL))objc_msgSend)(self,sel)];
-            break;
-        case FHPropertyEncodingTypeCString:
-            predicate = [NSPredicate predicateWithFormat:@"%@ = %s",primaryKey,((char *(*)(id,SEL))objc_msgSend)(self,sel)];
-            break;
-        case FHPropertyEncodingTypeObject:
-            if (info.objectTypeEncoding == FHPropertyObjectEncodingTypeNSString||info.objectTypeEncoding == FHPropertyObjectEncodingTypeNSNumber) {
-                predicate = [NSPredicate predicateWithFormat:@"%@ = %@",primaryKey,((id(*)(id,SEL))objc_msgSend)(self,sel)];
-            }else if (info.objectTypeEncoding == FHPropertyObjectEncodingTypeNSURL) {
-                NSURL *URL = ((NSURL*(*)(id,SEL))objc_msgSend)(self,sel);
-                predicate = [NSPredicate predicateWithFormat:@"%@ = %@",primaryKey,URL.absoluteString];
-            }else if (info.objectTypeEncoding == FHPropertyObjectEncodingTypeNSDate) {
-                NSDate *date = ((NSDate*(*)(id,SEL))objc_msgSend)(self,sel);
-                NSDateFormatter *formatter = [NSDateFormatter new];
-                formatter.dateFormat = @"yyyy-MM-dd HH:mm:ss";
-                predicate = [NSPredicate predicateWithFormat:@"%@ = %@",primaryKey,[formatter stringFromDate:date]];
-            }
-            break;
-        default:
-            break;
-    }
+    NSPredicate *predicate = predicateWithPrimaryKey(self, primaryKey);
     NSParameterAssert(predicate);
     return [self sql_updateOnColumns:columns predicate:predicate];
 }
@@ -217,6 +223,22 @@ FOUNDATION_STATIC_INLINE NSString * SqliteTypeFromPropertyType(FHPropertyInfo *i
     [sql deleteCharactersInRange:NSMakeRange(sql.length-1, 1)];
     [sql appendString:predicate.predicateFormat];
     return [sql copy];
+}
+
+- (NSString *)sql_delete {
+    Class<FHSqliteProtocol> cls = [self class];
+    if (class_respondsToSelector(cls, @selector(primaryKey))) {
+        NSString *primaryKey = [cls primaryKey];
+        if (primaryKey.length > 0) {
+            NSPredicate *predicate = predicateWithPrimaryKey(self, primaryKey);
+            return [[self class] sql_deleteWithPredicate:predicate];
+        }
+    }
+    return nil;
+}
+
++ (NSString *)sql_deleteWithPredicate:(NSPredicate *)predicate {
+    return predicate?[NSString stringWithFormat:@"delete from %@ %@",[self __tableName],predicate.predicateFormat]:[NSString stringWithFormat:@"delete from %@",[self __tableName]];
 }
 
 @end
