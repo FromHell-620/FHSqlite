@@ -12,6 +12,8 @@
 
 + (NSString *)sql_initializeTable;
 
++ (NSArray<NSString *> *)sql_initializeIndexes;
+
 - (NSString *)sql_insert;
 
 - (NSString *)sql_insertOnColumns:(NSArray<NSString *> *)columns;

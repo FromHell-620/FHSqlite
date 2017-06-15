@@ -59,7 +59,7 @@ typedef NS_OPTIONS(NSInteger, FHSqliteConstraintState) {
 
 @property (nonatomic,copy,class,nullable) NSArray<NSString *> *columnNames;
 
-@property (nonatomic,copy,class,nullable) NSArray<NSString *> *indexNames;
+@property (nonatomic,copy,class,nullable) NSDictionary<NSString *,NSString *> *indexNames;
 
 @property (nonatomic,copy,class,nullable) NSDictionary<NSString *,FHSqliteConstraint *> *constraints;
 

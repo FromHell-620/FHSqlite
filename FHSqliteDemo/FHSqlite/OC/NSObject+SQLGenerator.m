@@ -164,6 +164,22 @@ FOUNDATION_STATIC_INLINE NSPredicate *predicateWithPrimaryKey(id self,NSString *
     return [sql copy];
 }
 
++ (NSArray<NSString *> *)sql_initializeIndexes {
+    Class<FHSqliteProtocol> cls = self;
+    NSDictionary<NSString *,NSString *> *indexes = nil;
+    if (class_respondsToSelector(cls, @selector(indexNames))) {
+        indexes = [cls indexNames];
+    }
+    NSMutableArray<NSString *> *sqls = nil;
+    if (indexes.count > 0) {
+        sqls = [NSMutableArray array];
+    }
+    [indexes enumerateKeysAndObjectsUsingBlock:^(NSString * _Nonnull key, NSString * _Nonnull obj, BOOL * _Nonnull stop) {
+        [sqls addObject:[NSString stringWithFormat:@"CREATE INDEX %@ ON %@ (%@)",obj,[self __tableName],key]];
+    }];
+    return [sqls copy];
+}
+
 - (NSString *)sql_insert {
     return [self sql_insertOnColumns:[[self class] __columnNames]];
 }
