@@ -9,6 +9,7 @@
 #import "AppDelegate.h"
 #import "NSObject+SQLGenerator.h"
 #import "Test.h"
+#import <sqlite3.h>
 
 @interface AppDelegate ()
 
@@ -18,17 +19,8 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    NSString *str = [Test sql_initializeTable];
-    NSLog(@"%@",str);
     
-    Test* test = [[Test alloc] init];
-    NSLog(@"%@  %@",[test sql_insert],[test sql_insertOnColumns:@[@"str",@"number",@"b_r"]]);
     
-    NSMutableArray *arr = [NSMutableArray array];
-    for (int i=0; i<10; i++) {
-        [arr addObject:[Test new]];
-    }
-    NSLog(@"%@ ==== ",[Test sql_insertWithMdoels:arr]);
     // Override point for customization after application launch.
     return YES;
 }

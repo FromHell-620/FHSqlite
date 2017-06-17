@@ -35,6 +35,6 @@
 
 + (NSString *)sql_selectWithPredicate:(NSPredicate *)predicate;
 
-+ (NSString)sql_selectWithPredicate:(NSPredicate *)predicate orderBy:(NSString *)column asc:(BOOL)asc;
++ (NSString *)sql_selectWithPredicate:(NSPredicate *)predicate orderBy:(NSString *)column asc:(BOOL)asc;
 
 @end

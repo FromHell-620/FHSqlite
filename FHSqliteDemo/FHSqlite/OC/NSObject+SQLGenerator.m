@@ -257,8 +257,21 @@ FOUNDATION_STATIC_INLINE NSPredicate *predicateWithPrimaryKey(id self,NSString *
     return predicate?[NSString stringWithFormat:@"delete from %@ %@",[self __tableName],predicate.predicateFormat]:[NSString stringWithFormat:@"delete from %@",[self __tableName]];
 }
 
-+ (NSString)sql_selectWithPredicate:(NSPredicate *)predicate orderBy:(NSString *)column asc:(BOOL)asc {
++ (NSString *)sql_selectWithPredicate:(NSPredicate *)predicate {
+    return [self sql_selectWithPredicate:predicate orderBy:nil asc:NO];
+}
+
++ (NSString *)sql_selectWithPredicate:(NSPredicate *)predicate orderBy:(NSString *)column asc:(BOOL)asc {
+    NSMutableString *sql = [NSMutableString stringWithFormat:@"select * from %@",[self __tableName]];
+    if (predicate) {
+        [sql appendFormat:@" %@",predicate.predicateFormat];
+    }
     
+    if (column) {
+        asc ? [sql appendFormat:@" orderby %@ asc",column]:[sql appendFormat:@" orderby %@ desc",column];
+    }
+    [sql appendString:";"]
+    return [sql copy];
 }
 
 @end
