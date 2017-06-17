@@ -270,7 +270,7 @@ FOUNDATION_STATIC_INLINE NSPredicate *predicateWithPrimaryKey(id self,NSString *
     if (column) {
         asc ? [sql appendFormat:@" orderby %@ asc",column]:[sql appendFormat:@" orderby %@ desc",column];
     }
-    [sql appendString:";"]
+    [sql appendString:@";"];
     return [sql copy];
 }
 
