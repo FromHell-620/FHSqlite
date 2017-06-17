@@ -257,4 +257,8 @@ FOUNDATION_STATIC_INLINE NSPredicate *predicateWithPrimaryKey(id self,NSString *
     return predicate?[NSString stringWithFormat:@"delete from %@ %@",[self __tableName],predicate.predicateFormat]:[NSString stringWithFormat:@"delete from %@",[self __tableName]];
 }
 
++ (NSString)sql_selectWithPredicate:(NSPredicate *)predicate orderBy:(NSString *)column asc:(BOOL)asc {
+    
+}
+
 @end

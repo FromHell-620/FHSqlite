@@ -9,42 +9,35 @@
 #include "fh_sqlite.h"
 #include <pthread/pthread.h>
 
-CF_INLINE void sqlite_lock_initialize(SqliteRef sqlite)
-{
+CF_INLINE void sqlite_lock_initialize(SqliteRef sqlite) {
     pthread_mutex_init(&(sqlite->_sqlite_lock), NULL);
 }
 
-CF_INLINE void sqlite_lock_destory(SqliteRef sqlite)
-{
+CF_INLINE void sqlite_lock_destory(SqliteRef sqlite) {
     pthread_mutex_destroy(&(sqlite->_sqlite_lock));
 }
 
-CF_INLINE void sqlite_lock(SqliteRef sqlite)
-{
+CF_INLINE void sqlite_lock(SqliteRef sqlite) {
     pthread_mutex_lock(&(sqlite->_sqlite_lock));
 }
                        
-CF_INLINE void sqlite_unlock(SqliteRef sqlite)
-{
+CF_INLINE void sqlite_unlock(SqliteRef sqlite) {
     pthread_mutex_unlock(&(sqlite->_sqlite_lock));
 }
 
-CF_INLINE void sqlite_db_cache_value_release(CFAllocatorRef allocator, const void* value)
-{
+CF_INLINE void sqlite_db_cache_value_release(CFAllocatorRef allocator, const void* value) {
     sqlite_db db = (sqlite_db)value;
     sqlite_db_delloc(db);
 }
 
-CF_INLINE void sqlite_db_stmt_cache_release(CFAllocatorRef allocator,const void* value)
-{
+CF_INLINE void sqlite_db_stmt_cache_release(CFAllocatorRef allocator,const void* value) {
     sqlite3_stmt* stmt = (sqlite3_stmt*)value;
     sqlite3_finalize(stmt);
     stmt = NULL;
 }
 
 
-SqliteRef sqlite_initialize(const char* sqlite_path)
-{
+SqliteRef sqlite_initialize(const char* sqlite_path) {
     if (sqlite_path == NULL || strlen(sqlite_path) <= 0) return NULL;
     
     SqliteRef sqlite = malloc(sizeof(_fh_sqlite));
@@ -56,8 +49,7 @@ SqliteRef sqlite_initialize(const char* sqlite_path)
     return sqlite;
 }
 
-sqlite_db sqlite_db_initialize(SqliteRef sqlite,pthread_t thread)
-{
+sqlite_db sqlite_db_initialize(SqliteRef sqlite,pthread_t thread) {
     if (thread == NULL || sqlite == NULL) return NULL;
     sqlite_lock(sqlite);
     sqlite_db db = malloc(sizeof(_sqlite_db));
@@ -73,8 +65,7 @@ sqlite_db sqlite_db_initialize(SqliteRef sqlite,pthread_t thread)
     return db;
 }
 
-sqlite_db sqlite_open(SqliteRef sqlite)
-{
+sqlite_db sqlite_open(SqliteRef sqlite) {
     if (sqlite == NULL) return NULL;
     sqlite_db _db = (sqlite_db)CFDictionaryGetValue(sqlite->_db_cache, pthread_self());
     if (_db ) return _db;
@@ -91,25 +82,21 @@ sqlite_db sqlite_open(SqliteRef sqlite)
     return _db;
 }
 
-sqlite_db db_with_thread(SqliteRef sqlite,pthread_t thread)
-{
+sqlite_db db_with_thread(SqliteRef sqlite,pthread_t thread) {
     if (sqlite == NULL || thread == NULL) return NULL;
     return (sqlite_db)CFDictionaryGetValue(sqlite->_db_cache, thread);
 }
 
-sqlite_db db_get_current(SqliteRef sqlite)
-{
+sqlite_db db_get_current(SqliteRef sqlite) {
     return db_with_thread(sqlite, pthread_self());
 }
 
-bool db_is_in(sqlite_db db)
-{
+bool db_is_in(sqlite_db db) {
     if (db == NULL) return false;
     return db->_in;
 }
 
-void sqlite_delloc(SqliteRef sqlite)
-{
+void sqlite_delloc(SqliteRef sqlite) {
     if (sqlite == NULL) return;
     free((void*)(sqlite->_sqlite_path));
     CFRelease(sqlite->_db_cache);
@@ -118,8 +105,7 @@ void sqlite_delloc(SqliteRef sqlite)
     sqlite = NULL;
 }
 
-void sqlite_db_delloc(sqlite_db _db)
-{
+void sqlite_db_delloc(sqlite_db _db) {
     if (_db == NULL) return;
     free((void*)(_db->_sqlite_path));
     CFRelease(_db->_stmt_cache);
