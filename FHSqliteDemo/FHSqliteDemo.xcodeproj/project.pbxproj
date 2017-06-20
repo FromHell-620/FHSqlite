@@ -17,7 +17,7 @@
 		883EA4651EA5C2550095F9A6 /* FHSqliteDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 883EA4641EA5C2550095F9A6 /* FHSqliteDemoUITests.m */; };
 		883EA4771EA5C5500095F9A6 /* fh_sqlite.c in Sources */ = {isa = PBXBuildFile; fileRef = 883EA4751EA5C5500095F9A6 /* fh_sqlite.c */; };
 		C93549591EF8091F002DDD10 /* write_loop.c in Sources */ = {isa = PBXBuildFile; fileRef = C93549571EF8091F002DDD10 /* write_loop.c */; };
-		C935495C1EF968C9002DDD10 /* lru_cache.c in Sources */ = {isa = PBXBuildFile; fileRef = C935495A1EF968C9002DDD10 /* lru_cache.c */; };
+		C935495F1EF976C5002DDD10 /* db_pool.c in Sources */ = {isa = PBXBuildFile; fileRef = C935495D1EF976C5002DDD10 /* db_pool.c */; };
 		C94998441EE59E2100BAAE1D /* FHClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C94998431EE59E2100BAAE1D /* FHClassInfo.m */; };
 		C94998481EE59EC900BAAE1D /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C94998471EE59EC900BAAE1D /* libsqlite3.tbd */; };
 		C949984A1EE5A0C600BAAE1D /* FHSqliteProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = C94998491EE5A0C600BAAE1D /* FHSqliteProtocol.m */; };
@@ -64,8 +64,8 @@
 		883EA4761EA5C5500095F9A6 /* fh_sqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fh_sqlite.h; sourceTree = "<group>"; };
 		C93549571EF8091F002DDD10 /* write_loop.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = write_loop.c; sourceTree = "<group>"; };
 		C93549581EF8091F002DDD10 /* write_loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = write_loop.h; sourceTree = "<group>"; };
-		C935495A1EF968C9002DDD10 /* lru_cache.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lru_cache.c; sourceTree = "<group>"; };
-		C935495B1EF968C9002DDD10 /* lru_cache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lru_cache.h; sourceTree = "<group>"; };
+		C935495D1EF976C5002DDD10 /* db_pool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = db_pool.c; sourceTree = "<group>"; };
+		C935495E1EF976C5002DDD10 /* db_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = db_pool.h; sourceTree = "<group>"; };
 		C94998421EE59E2100BAAE1D /* FHClassInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHClassInfo.h; sourceTree = "<group>"; };
 		C94998431EE59E2100BAAE1D /* FHClassInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHClassInfo.m; sourceTree = "<group>"; };
 		C94998451EE59E3B00BAAE1D /* FHSqliteProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHSqliteProtocol.h; sourceTree = "<group>"; };
@@ -184,8 +184,8 @@
 			children = (
 				883EA4751EA5C5500095F9A6 /* fh_sqlite.c */,
 				883EA4761EA5C5500095F9A6 /* fh_sqlite.h */,
-				C935495A1EF968C9002DDD10 /* lru_cache.c */,
-				C935495B1EF968C9002DDD10 /* lru_cache.h */,
+				C935495D1EF976C5002DDD10 /* db_pool.c */,
+				C935495E1EF976C5002DDD10 /* db_pool.h */,
 				C93549571EF8091F002DDD10 /* write_loop.c */,
 				C93549581EF8091F002DDD10 /* write_loop.h */,
 			);
@@ -347,6 +347,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				883EA4471EA5C2550095F9A6 /* ViewController.m in Sources */,
+				C935495F1EF976C5002DDD10 /* db_pool.c in Sources */,
 				C99F6EBB1EE9AAA6004CC51A /* Test.m in Sources */,
 				C94998441EE59E2100BAAE1D /* FHClassInfo.m in Sources */,
 				883EA4441EA5C2550095F9A6 /* AppDelegate.m in Sources */,
@@ -354,7 +355,6 @@
 				C99F6EB81EE99300004CC51A /* NSObject+SQLGenerator.m in Sources */,
 				C93549591EF8091F002DDD10 /* write_loop.c in Sources */,
 				883EA4771EA5C5500095F9A6 /* fh_sqlite.c in Sources */,
-				C935495C1EF968C9002DDD10 /* lru_cache.c in Sources */,
 				C949984A1EE5A0C600BAAE1D /* FHSqliteProtocol.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
