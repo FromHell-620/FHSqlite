@@ -15,5 +15,6 @@ db_pool pool_create(uint32_t max_count) {
     pool->_max_count = max_count;
     pool->_pool_count = 0;
     pool->_thefirst = NULL;
+    pool->_lock = OS_SPINLOCK_INIT;
     return pool;
 }

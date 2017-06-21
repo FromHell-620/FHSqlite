@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <libkern/OSAtomic.h>
 
 typedef struct {
     void *_value;//a sqlite_db object
@@ -24,6 +25,7 @@ typedef _pool_node *pool_node;
 typedef struct {
     uint32_t _pool_count;
     uint32_t _max_count;
+    OSSpinLock _lock;
     pool_node _thefirst;
 }_db_pool;
 
