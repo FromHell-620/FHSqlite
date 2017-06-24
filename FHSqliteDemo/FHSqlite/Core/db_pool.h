@@ -12,21 +12,20 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <CoreFoundation/CoreFoundation.h>
+#include <mach/mach.h>
+
 
 typedef struct _pool_node *pool_node;
 
+typedef void (*node_did_finish_used_callback)(pool_node node);
+
 struct _pool_node {
     bool _used;
+    bool _is_temp;
     void *_db;//a sqlite_db object
     pool_node next;
     pool_node prev;
-    void(^node_did_finish_used_callback)(pool_node node);
-};
-
-struct _pool_temp_node {
-    void *_db;
-    pool_node next;
-    void(^node_did_finish_used_callback)(pool_node node);
+    node_did_finish_used_callback release_callback;
 };
 
 typedef struct _db_pool *db_pool;
@@ -38,7 +37,7 @@ struct _db_pool {
     dispatch_semaphore_t _lock;
     pool_node _thefirst;
     pool_node _thelast;
-    struct _pool_temp_node _temp;
+    pool_node _temp;
 };
 
 
