@@ -23,6 +23,7 @@
 		C99F6EB81EE99300004CC51A /* NSObject+SQLGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = C99F6EB71EE99300004CC51A /* NSObject+SQLGenerator.m */; };
 		C99F6EBB1EE9AAA6004CC51A /* Test.m in Sources */ = {isa = PBXBuildFile; fileRef = C99F6EBA1EE9AAA6004CC51A /* Test.m */; };
 		C9AC59481EFD7AC1006829CC /* db_pool.c in Sources */ = {isa = PBXBuildFile; fileRef = C9AC59461EFD7AC1006829CC /* db_pool.c */; };
+		C9EE582E1F112759006A49F9 /* fh_linked.c in Sources */ = {isa = PBXBuildFile; fileRef = C9EE582C1F112759006A49F9 /* fh_linked.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -75,6 +76,8 @@
 		C99F6EBA1EE9AAA6004CC51A /* Test.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Test.m; sourceTree = "<group>"; };
 		C9AC59461EFD7AC1006829CC /* db_pool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = db_pool.c; sourceTree = "<group>"; };
 		C9AC59471EFD7AC1006829CC /* db_pool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = db_pool.h; sourceTree = "<group>"; };
+		C9EE582C1F112759006A49F9 /* fh_linked.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fh_linked.c; sourceTree = "<group>"; };
+		C9EE582D1F112759006A49F9 /* fh_linked.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fh_linked.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -184,6 +187,8 @@
 			children = (
 				883EA4751EA5C5500095F9A6 /* fh_sqlite.c */,
 				883EA4761EA5C5500095F9A6 /* fh_sqlite.h */,
+				C9EE582C1F112759006A49F9 /* fh_linked.c */,
+				C9EE582D1F112759006A49F9 /* fh_linked.h */,
 				C9AC59461EFD7AC1006829CC /* db_pool.c */,
 				C9AC59471EFD7AC1006829CC /* db_pool.h */,
 				C93549571EF8091F002DDD10 /* write_loop.c */,
@@ -348,6 +353,7 @@
 			files = (
 				883EA4471EA5C2550095F9A6 /* ViewController.m in Sources */,
 				C9AC59481EFD7AC1006829CC /* db_pool.c in Sources */,
+				C9EE582E1F112759006A49F9 /* fh_linked.c in Sources */,
 				C99F6EBB1EE9AAA6004CC51A /* Test.m in Sources */,
 				C94998441EE59E2100BAAE1D /* FHClassInfo.m in Sources */,
 				883EA4441EA5C2550095F9A6 /* AppDelegate.m in Sources */,

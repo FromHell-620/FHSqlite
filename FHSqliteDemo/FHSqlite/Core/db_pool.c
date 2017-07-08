@@ -8,6 +8,10 @@
 
 #include "db_pool.h"
 
+static inline void pool_node_finish_used_callback(void *context,pool_node node) {
+    
+}
+
 pool_node pool_node_create_option(bool is_temp) {
     pool_node node = malloc(sizeof(struct _pool_node));
     if (node == NULL) return node;
@@ -24,24 +28,13 @@ pool_node pool_node_create(void) {
 }
 
 void pool_node_usedify(db_pool pool,pool_node node) {
-    if (pool == NULL) return;
+    if (pool == NULL || node == NULL) return;
     pool->_thefirst = (node->next == NULL)?node:node->next;
     node->next = NULL;
     pool->_thelast->next = node;
     node->prev = pool->_thelast;
     pool->_thelast = node;
     node->_used = true;
-}
-
-void pool_node_unusedify(db_pool pool,pool_node node) {
-    if (pool == NULL || node == NULL) return;
-    if (node->prev) node->prev->next = node->next;
-    if (node->next) node->next->prev = node->prev;
-    node->prev = NULL;
-    node->next = pool->_thefirst;
-    pool->_thefirst->prev = node;
-    pool->_thefirst = node;
-    node->_used = false;
 }
 
 db_pool pool_create(uint32_t max_count) {
@@ -57,7 +50,7 @@ db_pool pool_create(uint32_t max_count) {
     return pool;
 }
 
-pool_node pool_query(db_pool pool) {
+pool_node pool_node_query(db_pool pool) {
     if (pool == NULL) return NULL;
     dispatch_semaphore_wait(pool->_lock, DISPATCH_TIME_FOREVER);
     pool_node node = pool->_thefirst;
@@ -91,3 +84,22 @@ pool_node pool_query(db_pool pool) {
         return temp_node;
     }
 }
+
+void pool_node_unusedify(db_pool pool,pool_node node) {
+    if (pool == NULL || node == NULL) return;
+    dispatch_semaphore_wait(pool->_lock, DISPATCH_TIME_FOREVER);
+    if (node->prev) node->prev->next = node->next;
+    if (node->next) node->next->prev = node->prev;
+    node->prev = NULL;
+    node->next = pool->_thefirst;
+    pool->_thefirst->prev = node;
+    pool->_thefirst = node;
+    node->_used = false;
+    dispatch_semaphore_signal(pool->_lock);
+}
+
+void pool_node_release(db_pool pool,pool_node node) {
+    
+}
+
+

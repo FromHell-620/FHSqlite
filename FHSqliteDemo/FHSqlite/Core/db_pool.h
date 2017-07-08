@@ -14,10 +14,7 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <mach/mach.h>
 
-
 typedef struct _pool_node *pool_node;
-
-typedef void (*node_did_finish_used_callback)(pool_node node);
 
 struct _pool_node {
     bool _used;
@@ -25,7 +22,6 @@ struct _pool_node {
     void *_db;//a sqlite_db object
     pool_node next;
     pool_node prev;
-    node_did_finish_used_callback release_callback;
 };
 
 typedef struct _db_pool *db_pool;
@@ -43,6 +39,8 @@ struct _db_pool {
 
 db_pool pool_create(uint32_t max_count);
 
-pool_node pool_query(db_pool pool);
+pool_node pool_node_query(db_pool pool);
+
+void pool_node_unusedify(db_pool pool,pool_node node);
 
 #endif /* db_pool_h */
