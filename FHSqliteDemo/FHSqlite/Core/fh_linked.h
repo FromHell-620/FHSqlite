@@ -43,10 +43,16 @@ typedef struct linkList {
 
 linkNode *linkNodeify(void *value);
 
+void linkNodeRelease(linkNode *node);
+
 linkIter *linkIterify(linkList *list,iterDirection dicection);
 
 linkNode *linkIterNext(linkIter *iter);
 
-linkList *linkListify(linkListNodeCallback callback);
+linkList *linkListify(linkListNodeCallback* callback);
+
+linkList *linkListEmpty(linkList *list);
+
+void linkListRelease(linkList *list);
 
 #endif /* fh_linked_h */

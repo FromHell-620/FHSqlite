@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "FHSqliteProtocol.h"
+#include "fh_linked.h"
 
 @interface ViewController ()
 
@@ -17,7 +18,6 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     // Do any additional setup after loading the view, typically from a nib.
 }
 

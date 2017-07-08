@@ -18,6 +18,12 @@ linkNode *linkNodeify(void *value) {
     return node;
 }
 
+void linkNodeRelease(linkNode *node) {
+    if (node == NULL) return;
+    free(node);
+    node = NULL;
+}
+
 linkIter *linkIterify(linkList *list,iterDirection dicection) {
     if (list == NULL) return NULL;
     linkIter *iter;
@@ -38,11 +44,36 @@ linkNode *linkIterNext(linkIter *iter) {
     return current;
 }
 
-linkList *linkListify(linkListNodeCallback callback) {
+linkList *linkListify(linkListNodeCallback* callback) {
     linkList *list;
     if ((list = malloc(sizeof(*list))) == NULL) return NULL;
     list->head = list->tail = NULL;
-    list->node_release = callback.node_release;
-    list->node_match = callback.node_match;
+    if (callback) {
+        list->node_release = (*callback).node_release;
+        list->node_match = (*callback).node_match;
+    }
     return list;
 }
+
+linkList *linkListEmpty(linkList *list) {
+    if (list == NULL) return NULL;
+    unsigned long len = list->len;
+    linkNode *current = list->head;
+    linkNode *next = NULL;
+    while (len --) {
+        next = current->next;
+        if (list->node_release) list->node_release(current->value);
+        linkNodeRelease(current);
+    }
+    list->head = list->tail = NULL;
+    list->len = 0;
+    return list;
+}
+
+void linkListRelease(linkList *list) {
+    if (linkListEmpty(list) == NULL) return;
+    free(list);
+    list = NULL;
+}
+
+
