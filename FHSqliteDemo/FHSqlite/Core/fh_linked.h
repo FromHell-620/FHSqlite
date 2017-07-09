@@ -41,17 +41,41 @@ typedef struct linkList {
     unsigned long len;
 } linkList;
 
+#pragma mark- linkNode
+
 linkNode *linkNodeify(void *value);
 
 void linkNodeRelease(linkNode *node);
+
+#pragma mark- linkIter
 
 linkIter *linkIterify(linkList *list,iterDirection dicection);
 
 linkNode *linkIterNext(linkIter *iter);
 
+#pragma mark- linkList
+
 linkList *linkListify(linkListNodeCallback* callback);
 
+linkList *linkListAddHead(linkList *list,void *value);
+
+linkList *linkListAddTail(linkList *list,void *value);
+
+linkNode *linkListQueryNode(linkList *list,unsigned long index);
+
+void *linkListQueryValue(linkList *list,unsigned long index);
+
+linkList *linkListInsert(linkList *list,void *value,unsigned long index);
+
+linkList *linkListDelWithIndex(linkList *list,unsigned long index);
+
+linkList *linkListDelWithValue(linkList *list,void *value);
+
+linkList *linkListDelTTail(linkList *list);
+
 linkList *linkListEmpty(linkList *list);
+
+linkList *linkListRotate(linkList *list);
 
 void linkListRelease(linkList *list);
 
