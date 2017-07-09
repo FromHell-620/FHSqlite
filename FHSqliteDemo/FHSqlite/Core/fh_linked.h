@@ -75,7 +75,9 @@ linkList *linkListDelTTail(linkList *list);
 
 linkList *linkListEmpty(linkList *list);
 
-linkList *linkListRotate(linkList *list);
+linkList *linkListHeadToTail(linkList *list);
+
+linkList *linkListTailToHead(linkList *list);
 
 void linkListRelease(linkList *list);
 

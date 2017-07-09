@@ -187,7 +187,19 @@ linkList *linkListEmpty(linkList *list) {
     return list;
 }
 
-linkList *linkListRotate(linkList *list) {
+linkList *linkListHeadToTail(linkList *list) {
+    if (list == NULL || list->len <= 1) return list;
+    linkNode *head = list->head;
+    list->head = head->next;
+    list->head->prev = NULL;
+    list->tail->next = head;
+    head->prev = list->tail;
+    list->tail = head;
+    head->next = NULL;
+    return list;
+}
+
+linkList *linkListTailToHead(linkList *list) {
     if (list == NULL || list->len <= 1) return list;
     linkNode *tail = list->tail;
     tail->prev->next = NULL;
