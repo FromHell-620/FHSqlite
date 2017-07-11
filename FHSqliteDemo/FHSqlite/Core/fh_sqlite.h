@@ -13,7 +13,22 @@
 #include <CoreFoundation/CoreFoundation.h>
 #include <sqlite3.h>
 #include "db_pool.h"
-typedef struct {
+
+
+
+
+
+
+
+
+typedef struct fh_sqlite {
+    const char *_sqlite_path;
+    pthread_mutex_t _sqlite_lock;
+    db_pool _pool;
+} fh_sqlite;
+
+
+typedef struct _sqlite_db {
     bool _in; // Whether it is a write connection.
     pthread_t _thread;
     sqlite3* _db;
@@ -28,6 +43,7 @@ typedef struct {
     pthread_mutex_t _sqlite_lock;
     db_pool pool;
 }_fh_sqlite;
+
 
 typedef _fh_sqlite* SqliteRef;
 
