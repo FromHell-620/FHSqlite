@@ -36,80 +36,35 @@ CF_INLINE void sqlite_db_stmt_cache_release(CFAllocatorRef allocator,const void*
     stmt = NULL;
 }
 
-SqliteRef sqlite_initialize(const char* sqlite_path) {
-    if (sqlite_path == NULL || strlen(sqlite_path) <= 0) return NULL;
-    
-    SqliteRef sqlite = malloc(sizeof(_fh_sqlite));
-    if (sqlite == NULL) return NULL;
-    sqlite->pool = pool_create(20);
-    sqlite->_sqlite_path = strdup(sqlite_path);
-    sqlite_lock_initialize(sqlite);
-    return sqlite;
-}
-
-sqlite_db sqlite_db_initialize(SqliteRef sqlite,pthread_t thread) {
-    if (thread == NULL || sqlite == NULL) return NULL;
-    sqlite_lock(sqlite);
-    sqlite_db db = malloc(sizeof(_sqlite_db));
-    if (db == NULL) {
-        sqlite_unlock(sqlite);
-        return NULL;
+void pool_insert(fh_pool *pool,fh_db *db) {
+    if (pool == NULL || db == NULL) return;
+    linkList *result = NULL;
+    if (pool->pool == NULL) {
+        linkList *list = NULL;
+        if ((list = linkListify(pool->callback)) == NULL) return ;
+        pool->pool = result = list;
+        pool->used_count += 1;
     }
-    sqlite_unlock(sqlite);
-    db->_thread = thread;
-    db->_sqlite_path = strdup(sqlite->_sqlite_path);
-    CFDictionaryValueCallBacks value = {0,0,&sqlite_db_stmt_cache_release,0,0};
-    db->_stmt_cache = CFDictionaryCreateMutable(CFAllocatorGetDefault(), 10, &kCFCopyStringDictionaryKeyCallBacks, &value);
-    return db;
-}
-
-sqlite_db sqlite_open(SqliteRef sqlite) {
-    if (sqlite == NULL) return NULL;
-
-    if (_db ) return _db;
-    
-    _db = sqlite_db_initialize(sqlite, pthread_self());
-    
-    sqlite3* db = NULL;
-    if (sqlite3_open(sqlite->_sqlite_path, &db) == SQLITE_OK) {
-        _db->_db = db;
-        CFDictionarySetValue(sqlite->_db_cache, pthread_self(), _db);
-    }else {
-        sqlite_db_delloc(_db);
+    if (pool->used_count >= pool->max_count) {
+        if (pool->temp_pool == NULL) {
+            linkList *list = NULL;
+            if ((list = linkListify(pool->callback)) == NULL) return;
+            pool->temp_pool = list;
+        }
+        result = pool->temp_pool;
     }
-    return _db;
+    linkListAddHead(result, db);
 }
 
-sqlite_db db_with_thread(SqliteRef sqlite,pthread_t thread) {
-    if (sqlite == NULL || thread == NULL) return NULL;
-    return (sqlite_db)CFDictionaryGetValue(sqlite->_db_cache, thread);
+fh_pool *pool_create(unsigned long max_count,linkListNodeCallback *callback) {
+    fh_pool *pool = NULL;
+    if ((pool = malloc(sizeof(*pool))) == NULL) return NULL;
+    pool->max_count = max_count;
+    pool->used_count = 0;
+    pool->pool = pool->temp_pool = NULL;
+    return pool;
 }
 
-sqlite_db db_get_current(SqliteRef sqlite) {
-    return db_with_thread(sqlite, pthread_self());
-}
-
-bool db_is_in(sqlite_db db) {
-    if (db == NULL) return false;
-    return db->_in;
-}
-
-void sqlite_delloc(SqliteRef sqlite) {
-    if (sqlite == NULL) return;
-    free((void*)(sqlite->_sqlite_path));
-    CFRelease(sqlite->_db_cache);
-    sqlite_lock_destory(sqlite);
-    free(sqlite);
-    sqlite = NULL;
-}
-
-void sqlite_db_delloc(sqlite_db _db) {
-    if (_db == NULL) return;
-    free((void*)(_db->_sqlite_path));
-    CFRelease(_db->_stmt_cache);
-    sqlite3_close(_db->_db);
-    _db = NULL;
-}
 
 
 

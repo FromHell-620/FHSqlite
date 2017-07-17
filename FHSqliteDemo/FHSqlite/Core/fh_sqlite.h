@@ -12,21 +12,30 @@
 #include <stdio.h>
 #include <CoreFoundation/CoreFoundation.h>
 #include <sqlite3.h>
-#include "db_pool.h"
+#include "fh_linked.h"
 
+typedef struct fh_db {
+    bool is_used;
+    sqlite3 *db;
+    CFMutableDictionaryRef stmt_cache;
+} fh_db;
 
-
-
-
-
+typedef struct fh_pool {
+    unsigned long used_count;
+    unsigned long max_count;
+    linkListNodeCallback *callback;
+    linkList *pool;
+    linkList *temp_pool;
+} fh_pool;
 
 
 typedef struct fh_sqlite {
-    const char *_sqlite_path;
-    pthread_mutex_t _sqlite_lock;
-    db_pool _pool;
+    const char *sqlite_path;
+    pthread_mutex_t sqlite_lock;
+    fh_pool *pool;
 } fh_sqlite;
 
+fh_pool *pool_create(unsigned long max_count,linkListNodeCallback *callback);
 
 typedef struct _sqlite_db {
     bool _in; // Whether it is a write connection.
