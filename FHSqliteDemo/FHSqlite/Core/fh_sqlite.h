@@ -28,7 +28,6 @@ typedef struct fh_pool {
     linkList *temp_pool;
 } fh_pool;
 
-
 typedef struct fh_sqlite {
     const char *sqlite_path;
     pthread_mutex_t sqlite_lock;

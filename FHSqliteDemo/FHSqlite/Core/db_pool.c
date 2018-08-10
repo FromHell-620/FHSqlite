@@ -7,50 +7,29 @@
 //
 
 #include "db_pool.h"
+#include <stdlib.h>
+//pool_node
 
-static inline void pool_node_finish_used_callback(void *context,pool_node node) {
+pool_node *node_create(bool isTemp) {
+    pool_node *node = calloc(1, sizeof(pool_node));
+    if (node == NULL) return NULL;
     
 }
 
-pool_node pool_node_create_option(bool is_temp) {
-    pool_node node = malloc(sizeof(struct _pool_node));
-    if (node == NULL) return node;
-    node->_used = false;
-    node->next = NULL;
-    node->prev = NULL;
-    node->_db = NULL;
-    node->_is_temp = is_temp;
-    return node;
-}
-
-pool_node pool_node_create(void) {
-    return pool_node_create_option(false);
-}
-
-void pool_node_usedify(db_pool pool,pool_node node) {
-    if (pool == NULL || node == NULL) return;
-    pool->_thefirst = (node->next == NULL)?node:node->next;
-    node->next = NULL;
-    pool->_thelast->next = node;
-    node->prev = pool->_thelast;
-    pool->_thelast = node;
-    node->_used = true;
-}
-
-db_pool pool_create(uint32_t max_count) {
-    db_pool pool = malloc(sizeof(struct _pool_node));
+//pool
+db_pool *pool_create(uint32_t max_count,void(*db_release)(void *db)) {
+    db_pool *pool = calloc(1, sizeof(db_pool));
     if (pool == NULL) return NULL;
+    linkListNodeCallback callback = {db_release,NULL};
+    linkList *list = linkListify(&callback);
+    pool->_pool = list;
     pool->_max_count = max_count;
     pool->_pool_count = 0;
-    pool->_temp_count = 0;
-    pool->_thefirst = NULL;
-    pool->_thelast = NULL;
-    pool->_lock = dispatch_semaphore_create(1);
-    pool->_temp = NULL;
+    pool->_inused_count = pool->_unused_count = 0;
     return pool;
 }
 
-pool_node pool_node_query(db_pool pool) {
+pool_node *pool_node_query(db_pool pool) {
     if (pool == NULL) return NULL;
     dispatch_semaphore_wait(pool->_lock, DISPATCH_TIME_FOREVER);
     pool_node node = pool->_thefirst;
