@@ -7,6 +7,20 @@
 //
 
 #include "fh_hash.h"
+#include <string.h>
+#include <stdlib.h>
+
+static const void *__FHHashStringRetainCallback(const void *key) {
+    return strdup(key);
+}
+
+static void __FHHashStringReleaseCallback(const void *key) {
+    free((void *)key);
+}
+
+static FHBoolean __FHHashStringEqualCallback(const void *key1,const void *key2) {
+    return strcmp(key1, key2) == 0;
+}
 
 struct FHHash {
     FHIndex capacity;
@@ -15,3 +29,15 @@ struct FHHash {
     FHHashKeyCallback key_callback;
     FHHashValueCallback value_callback;
 };
+
+const FHHashKeyCallback kFHCopyStringKeyCallback = {
+    
+}
+
+FHHashRef FHHashCreate() {
+    return FHHashCreateWithOptions(0, NULL, NULL);
+}
+
+FHHashRef FHHashCreateWithOptions(FHIndex capacity,const FHHashKeyCallback *keyCallback,const FHHashValueCallback *valueCallback) {
+    
+}

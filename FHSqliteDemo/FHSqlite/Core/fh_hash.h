@@ -52,7 +52,7 @@ FH_EXTERN
 FHHashRef FHHashCreate();
 
 FH_EXTERN
-FHHashRef FHHashCreateWithOptions(FHIndex capacity,const FHHashKeyCallback keyCallback,const FHHashValueCallback valueCallback);
+FHHashRef FHHashCreateWithOptions(FHIndex capacity,const FHHashKeyCallback *keyCallback,const FHHashValueCallback *valueCallback);
 
 FH_EXTERN
 FHIndex FHHashGetCount(FHHashRef hash);
