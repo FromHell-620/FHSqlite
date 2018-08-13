@@ -7,3 +7,11 @@
 //
 
 #include "fh_hash.h"
+
+struct FHHash {
+    FHIndex capacity;
+    FHIndex count;
+    hashEntry *buckets;
+    FHHashKeyCallback key_callback;
+    FHHashValueCallback value_callback;
+};

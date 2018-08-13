@@ -55,6 +55,19 @@ linkList *linkListify(linkListNodeCallback* callback) {
     return list;
 }
 
+linkList *linkListAddHeadWithNode(linkList *list,linkNode *node) {
+    if (list == NULL || node == NULL) return list;
+    if (list->len == 0)
+        list->head = list->tail = node;
+    else {
+        node->next = list->head;
+        list->head->prev = node;
+        list->head = node;
+    }
+    list->len++;
+    return list;
+}
+
 linkList *linkListAddHead(linkList *list,void *value) {
     if (list == NULL || value == NULL) return list;
     linkNode *new;
@@ -207,6 +220,17 @@ linkList *linkListTailToHead(linkList *list) {
     list->head->prev = tail;
     tail->next = list->head;
     list->head = tail;
+    return list;
+}
+
+linkList *linkListMoveToTail(linkList *list,linkNode *node) {
+    if (list == NULL || node == NULL || node == list->tail) return list;
+    node->prev->next = node->next;
+    node->next->prev = node->prev;
+    list->tail->next = node;
+    node->prev = list->tail;
+    node->next = NULL;
+    list->tail = node;
     return list;
 }
 

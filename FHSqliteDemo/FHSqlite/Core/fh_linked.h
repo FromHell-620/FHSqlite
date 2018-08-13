@@ -11,6 +11,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include "fh_define.h"
 
 typedef enum iterDirection {
     iterDirectionHead,
@@ -43,42 +44,46 @@ typedef struct linkList {
 
 #pragma mark- linkNode
 
-linkNode *linkNodeify(void *value);
+FH_EXTERN linkNode *linkNodeify(void *value);
 
-void linkNodeRelease(linkNode *node);
+FH_EXTERN void linkNodeRelease(linkNode *node);
 
 #pragma mark- linkIter
 
-linkIter *linkIterify(linkList *list,iterDirection dicection);
+FH_EXTERN linkIter *linkIterify(linkList *list,iterDirection dicection);
 
-linkNode *linkIterNext(linkIter *iter);
+FH_EXTERN linkNode *linkIterNext(linkIter *iter);
 
 #pragma mark- linkList
 
-linkList *linkListify(linkListNodeCallback* callback);
+FH_EXTERN linkList *linkListify(linkListNodeCallback* callback);
 
-linkList *linkListAddHead(linkList *list,void *value);
+FH_EXTERN linkList *linkListAddHeadWithNode(linkList *list,linkNode *node);
 
-linkList *linkListAddTail(linkList *list,void *value);
+FH_EXTERN linkList *linkListAddHead(linkList *list,void *value);
 
-linkNode *linkListQueryNode(linkList *list,unsigned long index);
+FH_EXTERN linkList *linkListAddTail(linkList *list,void *value);
 
-void *linkListQueryValue(linkList *list,unsigned long index);
+FH_EXTERN linkNode *linkListQueryNode(linkList *list,unsigned long index);
 
-linkList *linkListInsert(linkList *list,void *value,unsigned long index);
+FH_EXTERN void *linkListQueryValue(linkList *list,unsigned long index);
 
-linkList *linkListDelWithIndex(linkList *list,unsigned long index);
+FH_EXTERN linkList *linkListInsert(linkList *list,void *value,unsigned long index);
 
-linkList *linkListDelWithValue(linkList *list,void *value);
+FH_EXTERN linkList *linkListDelWithIndex(linkList *list,unsigned long index);
 
-linkList *linkListDelTTail(linkList *list);
+FH_EXTERN linkList *linkListDelWithValue(linkList *list,void *value);
 
-linkList *linkListEmpty(linkList *list);
+FH_EXTERN linkList *linkListDelTTail(linkList *list);
 
-linkList *linkListHeadToTail(linkList *list);
+FH_EXTERN linkList *linkListEmpty(linkList *list);
 
-linkList *linkListTailToHead(linkList *list);
+FH_EXTERN linkList *linkListHeadToTail(linkList *list);
 
-void linkListRelease(linkList *list);
+FH_EXTERN linkList *linkListTailToHead(linkList *list);
+
+FH_EXTERN linkList *linkListMoveToTail(linkList *list,linkNode *node);
+
+FH_EXTERN void linkListRelease(linkList *list);
 
 #endif /* fh_linked_h */

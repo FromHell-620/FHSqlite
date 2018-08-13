@@ -13,7 +13,6 @@
 #include "fh_sqlite.h"
 typedef struct {
     pthread_t _thread;
-    _sqlite_db _db;
 }_write_loop;
 
 typedef struct _write_loop* write_loop;

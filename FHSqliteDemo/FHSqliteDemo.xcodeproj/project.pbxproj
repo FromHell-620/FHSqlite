@@ -64,6 +64,7 @@
 		883EA4731EA5C4780095F9A6 /* FMSqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMSqlite.h; sourceTree = "<group>"; };
 		883EA4751EA5C5500095F9A6 /* fh_sqlite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fh_sqlite.c; sourceTree = "<group>"; };
 		883EA4761EA5C5500095F9A6 /* fh_sqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fh_sqlite.h; sourceTree = "<group>"; };
+		8863E2E721217E1A00DD360F /* fh_define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fh_define.h; sourceTree = "<group>"; };
 		C93549571EF8091F002DDD10 /* write_loop.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = write_loop.c; sourceTree = "<group>"; };
 		C93549581EF8091F002DDD10 /* write_loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = write_loop.h; sourceTree = "<group>"; };
 		C94998421EE59E2100BAAE1D /* FHClassInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHClassInfo.h; sourceTree = "<group>"; };
@@ -188,6 +189,7 @@
 		883EA4741EA5C52F0095F9A6 /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				8863E2E721217E1A00DD360F /* fh_define.h */,
 				883EA4751EA5C5500095F9A6 /* fh_sqlite.c */,
 				883EA4761EA5C5500095F9A6 /* fh_sqlite.h */,
 				C9EE582C1F112759006A49F9 /* fh_linked.c */,
