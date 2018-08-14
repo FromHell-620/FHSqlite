@@ -21,30 +21,31 @@ typedef FHHashCode (*FHHashCodeCallback)(const void *value);
 
 typedef struct {
     FHHashRetainCallback retain;
-    FHHashRetainCallback release;
+    FHHashReleaseCallback release;
     FHHashEqualCallback equal;
     FHHashCodeCallback hash;
 } FHHashKeyCallback;
 
 typedef struct {
-    FHHashRetainCallback retail;
+    FHHashRetainCallback retain;
     FHHashReleaseCallback release;
     FHHashEqualCallback equal;
 } FHHashValueCallback;
 
 FH_EXTERN const FHHashKeyCallback kFHCopyStringKeyCallback;
 
+FH_EXTERN const FHHashValueCallback kFHCopyStringValueCallback;
+
 typedef void (*FHHashApplierFunction)(const void *key,const void *value,void *context);
 
-
-typedef struct hashEntry {
+typedef struct FHHashEntry {
     const void *key;
     const void *value;
     FHHashCode hash;
-    struct hashEntry *next;
-} hashEntry;
+    struct FHHashEntry *next;
+} FHHashEntry;
 
-typedef hashEntry * hashEntryRef;
+typedef FHHashEntry * FHHashEntryRef;
 
 typedef struct FHHash *FHHashRef;
 
@@ -58,7 +59,7 @@ FH_EXTERN
 FHIndex FHHashGetCount(FHHashRef hash);
 
 FH_EXTERN
-FHIndex FHHashContainsKey(FHHashRef hash,const void *key);
+FHBoolean FHHashContainsKey(FHHashRef hash,const void *key);
 
 FH_EXTERN
 FHBoolean FHHashContainsValue(FHHashRef hash,const void *value);
@@ -71,9 +72,6 @@ void FHHashSetValue(FHHashRef hash,const void *key,const void *value);
 
 FH_EXTERN
 void FHHashRemoveValue(FHHashRef hash,const void *key);
-
-FH_EXTERN
-void FHHashReplaceValue(FHHashRef hash,const void *key,const void *value);
 
 FH_EXTERN
 void FHHashClean(FHHashRef hash);
