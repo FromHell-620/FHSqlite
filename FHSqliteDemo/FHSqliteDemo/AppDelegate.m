@@ -10,6 +10,7 @@
 #import "NSObject+SQLGenerator.h"
 #import "Test.h"
 #import <sqlite3.h>
+#include "fh_hash.h"
 
 @interface AppDelegate ()
 
@@ -19,7 +20,18 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    FHHashRef hash = FHHashCreate();
+    for (int i=0; i<100; i++) {
+        const void *key = @(i).stringValue.UTF8String;
+        const void *value = @(i).stringValue.UTF8String;
+        NSLog(@"%d",i);
+        FHHashSetValue(hash, key, value);
+    }
     
+    for (int i=0; i<100; i++) {
+        const void *key = @(i).stringValue.UTF8String;
+        NSLog(@"%s",FHHashGetValue(hash, key));
+    }
     
     // Override point for customization after application launch.
     return YES;
