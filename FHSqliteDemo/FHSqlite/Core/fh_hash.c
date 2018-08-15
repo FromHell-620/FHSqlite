@@ -91,14 +91,14 @@ const FHHashValueCallback kFHCopyStringValueCallback = {
 
 FH_INLINE FHIndex __FHBucketCountWithCapacity(FHIndex capacity) {
     unsigned int index = 0;
-    while (__FHHashTableCapacities[index] < capacity) {
+    while (__FHHashTableCapacities[index] <= capacity) {
         index ++;
     }
     return __FHHashTableCapacities[index];
 }
 
 FH_INLINE FHIndex __FHBucketIndexWithHashCode(FHHashRef hash,FHHashCode hashCode) {
-    return hashCode & hash->bucketCount;
+    return hashCode % hash->bucketCount;
 }
 
 FH_INLINE FHBoolean __FHBucketInsertHashEntry(FHHashEntryRef *buckets,FHHashEntryRef hashEntry,FHIndex index,FHBoolean shouldCompare) {
@@ -106,6 +106,7 @@ FH_INLINE FHBoolean __FHBucketInsertHashEntry(FHHashEntryRef *buckets,FHHashEntr
     FHBoolean boolean = false;
     if (existEntry == NULL) {
         buckets[index] = hashEntry;
+        hashEntry->next = NULL;
     }else {
         while (existEntry != NULL) {
             if (shouldCompare && existEntry->hash == hashEntry->hash) {
@@ -137,9 +138,10 @@ FH_INLINE void __FHHashRehash(FHHashRef hash) {
         FHHashEntryRef nextEntry = NULL;
         while (hashEntry != NULL) {
             nextEntry = hashEntry->next;
-            FHIndex bucketIndex = hashEntry->hash & bucketCount;
+            FHIndex bucketIndex = hashEntry->hash % bucketCount;
             __FHBucketInsertHashEntry(hash->buckets, hashEntry, bucketIndex, false);
             hashEntry = nextEntry;
+            ++ tempCount;
         }
     }
     free(oldBuckets);
@@ -209,7 +211,7 @@ const void *FHHashGetValue(FHHashRef hash,const void *key) {
     FHHashEntryRef hashEntry = hash->buckets[bucketIndex];
     FHTypeRef value = NULL;
     while (hashEntry != NULL) {
-        if (hashCode == hashEntry->hash) {
+        if (hash->keyCallback.equal ? hash->keyCallback.equal(hashEntry->key,key) : hashEntry->hash == hashCode) {
             value = hashEntry->value;
             break;
         }

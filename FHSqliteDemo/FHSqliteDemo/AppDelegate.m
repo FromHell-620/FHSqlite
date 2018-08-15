@@ -20,15 +20,14 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    FHHashRef hash = FHHashCreate();
-    for (int i=0; i<100; i++) {
+    FHHashRef hash = FHHashCreateWithOptions(0, &kFHCopyStringKeyCallback, NULL);
+    for (int i=0; i<200; i++) {
         const void *key = @(i).stringValue.UTF8String;
         const void *value = @(i).stringValue.UTF8String;
-        NSLog(@"%d",i);
         FHHashSetValue(hash, key, value);
     }
     
-    for (int i=0; i<100; i++) {
+    for (int i=0; i<200; i++) {
         const void *key = @(i).stringValue.UTF8String;
         NSLog(@"%s",FHHashGetValue(hash, key));
     }
