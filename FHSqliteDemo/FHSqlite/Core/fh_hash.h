@@ -38,15 +38,6 @@ FH_EXTERN const FHHashValueCallback kFHCopyStringValueCallback;
 
 typedef void (*FHHashApplierFunction)(const void *key,const void *value,void *context);
 
-typedef struct FHHashEntry {
-    const void *key;
-    const void *value;
-    FHHashCode hash;
-    struct FHHashEntry *next;
-} FHHashEntry;
-
-typedef FHHashEntry * FHHashEntryRef;
-
 typedef struct FHHash *FHHashRef;
 
 FH_EXTERN
@@ -78,5 +69,8 @@ void FHHashClean(FHHashRef hash);
 
 FH_EXTERN
 void FHHashApplyFuncation(FHHashRef hash,FHHashApplierFunction applier,void *context);
+
+FH_EXTERN
+void FHHashRelease(FHHashRef hash);
 
 #endif /* fh_hash_h */

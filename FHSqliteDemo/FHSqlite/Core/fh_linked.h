@@ -19,8 +19,9 @@ typedef enum iterDirection {
 } iterDirection;
 
 typedef struct linkListNodeCallback {
-    void(*node_release)(void *ptr);
-    int(*node_match)(void *pth,void *key);
+    void * (*node_retain)(void *ptr);
+    void (*node_release)(void *ptr);
+    int (*node_match)(void *pth,void *key);
 } linkListNodeCallback;
 
 typedef struct linkNode {
@@ -37,8 +38,7 @@ typedef struct linkIter {
 typedef struct linkList {
     linkNode *head;
     linkNode *tail;
-    void(*node_release)(void *ptr);
-    int(*node_match)(void *pth,void *key);
+    linkListNodeCallback callback;
     unsigned long len;
 } linkList;
 

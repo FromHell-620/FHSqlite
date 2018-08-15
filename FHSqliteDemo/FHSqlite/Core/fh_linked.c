@@ -49,14 +49,14 @@ linkList *linkListify(linkListNodeCallback* callback) {
     if ((list = malloc(sizeof(*list))) == NULL) return NULL;
     list->head = list->tail = NULL;
     if (callback) {
-        list->node_release = (*callback).node_release;
-        list->node_match = (*callback).node_match;
+        list->callback = *callback;
     }
     return list;
 }
 
 linkList *linkListAddHeadWithNode(linkList *list,linkNode *node) {
     if (list == NULL || node == NULL) return list;
+    if (list->callback.node_retain) node->value = list->callback.node_retain(node->value);
     if (list->len == 0)
         list->head = list->tail = node;
     else {
@@ -72,6 +72,7 @@ linkList *linkListAddHead(linkList *list,void *value) {
     if (list == NULL || value == NULL) return list;
     linkNode *new;
     if ((new = linkNodeify(value)) == NULL) return list;
+    if (list->callback.node_retain) new->value = list->callback.node_retain(value);
     if (list->len == 0)
         list->head = list->tail = new;
     else {
@@ -87,6 +88,7 @@ linkList *linkListAddTail(linkList *list,void *value) {
     if (list == NULL || value == NULL) return list;
     linkNode *new;
     if ((new = linkNodeify(value)) == NULL) return list;
+    if (list->callback.node_retain) new->value = list->callback.node_retain(value);
     if (list->len == 0)
         list->head = list->tail = new;
     else {
@@ -122,6 +124,7 @@ linkList *linkListInsert(linkList *list,void *value,unsigned long index) {
     if (index == 0 && linkListAddHead(list, value)) return list;
     linkNode *new;
     if ((new = linkNodeify(value)) == NULL) return list;
+    if (list->callback.node_retain) new->value = list->callback.node_retain(value);
     linkNode *indexNode = linkListQueryNode(list, index);
     new->next = indexNode;
     new->prev = indexNode->prev;
@@ -144,7 +147,7 @@ linkList *linkListDelWithIndex(linkList *list,unsigned long index) {
         indexNode->prev->next = indexNode->next;
         indexNode->next->prev = indexNode->prev;
     }
-    if (list->node_release) list->node_release(indexNode->value);
+    if (list->callback.node_release) list->callback.node_release(indexNode->value);
     linkNodeRelease(indexNode);
     list->len--;
     return list;
@@ -155,9 +158,9 @@ linkList *linkListDelWithValue(linkList *list,void *value) {
     linkNode *head = list->head;
     linkNode *result = NULL;
     while (head) {
-        if (list->node_match && list->node_match(head->value,value)) {
+        if (list->callback.node_match && list->callback.node_match(head->value,value)) {
             result = head;
-        }else if (!(list->node_match)&&head->value == value) {
+        }else if (!(list->callback.node_match)&&head->value == value) {
             result = head;
         }else
             head = head->next;
@@ -173,7 +176,7 @@ linkList *linkListDelWithValue(linkList *list,void *value) {
         result->prev->next = result->next;
         result->next->prev = result->prev;
     }
-    if (list->node_release) list->node_release(result->value);
+    if (list->callback.node_release) list->callback.node_release(result->value);
     linkNodeRelease(result);
     list->len--;
     return list;
@@ -191,7 +194,7 @@ linkList *linkListEmpty(linkList *list) {
     linkNode *next = NULL;
     while (len --) {
         next = current->next;
-        if (list->node_release) list->node_release(current->value);
+        if (list->callback.node_release) list->callback.node_release(current->value);
         linkNodeRelease(current);
         current = next;
     }

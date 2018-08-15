@@ -16,7 +16,7 @@
 		883EA45A1EA5C2550095F9A6 /* FHSqliteDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 883EA4591EA5C2550095F9A6 /* FHSqliteDemoTests.m */; };
 		883EA4651EA5C2550095F9A6 /* FHSqliteDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 883EA4641EA5C2550095F9A6 /* FHSqliteDemoUITests.m */; };
 		883EA4771EA5C5500095F9A6 /* fh_sqlite.c in Sources */ = {isa = PBXBuildFile; fileRef = 883EA4751EA5C5500095F9A6 /* fh_sqlite.c */; };
-		C93549591EF8091F002DDD10 /* write_loop.c in Sources */ = {isa = PBXBuildFile; fileRef = C93549571EF8091F002DDD10 /* write_loop.c */; };
+		8860C5A62124154800FEF135 /* fh_pool.c in Sources */ = {isa = PBXBuildFile; fileRef = 8860C5A42124154800FEF135 /* fh_pool.c */; };
 		C94998441EE59E2100BAAE1D /* FHClassInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = C94998431EE59E2100BAAE1D /* FHClassInfo.m */; };
 		C94998481EE59EC900BAAE1D /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = C94998471EE59EC900BAAE1D /* libsqlite3.tbd */; };
 		C949984A1EE5A0C600BAAE1D /* FHSqliteProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = C94998491EE5A0C600BAAE1D /* FHSqliteProtocol.m */; };
@@ -64,9 +64,9 @@
 		883EA4731EA5C4780095F9A6 /* FMSqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMSqlite.h; sourceTree = "<group>"; };
 		883EA4751EA5C5500095F9A6 /* fh_sqlite.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = fh_sqlite.c; sourceTree = "<group>"; };
 		883EA4761EA5C5500095F9A6 /* fh_sqlite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = fh_sqlite.h; sourceTree = "<group>"; };
+		8860C5A42124154800FEF135 /* fh_pool.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = fh_pool.c; sourceTree = "<group>"; };
+		8860C5A52124154800FEF135 /* fh_pool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fh_pool.h; sourceTree = "<group>"; };
 		8863E2E721217E1A00DD360F /* fh_define.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = fh_define.h; sourceTree = "<group>"; };
-		C93549571EF8091F002DDD10 /* write_loop.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = write_loop.c; sourceTree = "<group>"; };
-		C93549581EF8091F002DDD10 /* write_loop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = write_loop.h; sourceTree = "<group>"; };
 		C94998421EE59E2100BAAE1D /* FHClassInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHClassInfo.h; sourceTree = "<group>"; };
 		C94998431EE59E2100BAAE1D /* FHClassInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FHClassInfo.m; sourceTree = "<group>"; };
 		C94998451EE59E3B00BAAE1D /* FHSqliteProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FHSqliteProtocol.h; sourceTree = "<group>"; };
@@ -196,10 +196,10 @@
 				C9EE582D1F112759006A49F9 /* fh_linked.h */,
 				C9EB4AC61F16701100F8EB8A /* fh_hash.c */,
 				C9EB4AC71F16701100F8EB8A /* fh_hash.h */,
+				8860C5A42124154800FEF135 /* fh_pool.c */,
+				8860C5A52124154800FEF135 /* fh_pool.h */,
 				C9AC59461EFD7AC1006829CC /* db_pool.c */,
 				C9AC59471EFD7AC1006829CC /* db_pool.h */,
-				C93549571EF8091F002DDD10 /* write_loop.c */,
-				C93549581EF8091F002DDD10 /* write_loop.h */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -367,7 +367,7 @@
 				883EA4441EA5C2550095F9A6 /* AppDelegate.m in Sources */,
 				883EA4411EA5C2550095F9A6 /* main.m in Sources */,
 				C99F6EB81EE99300004CC51A /* NSObject+SQLGenerator.m in Sources */,
-				C93549591EF8091F002DDD10 /* write_loop.c in Sources */,
+				8860C5A62124154800FEF135 /* fh_pool.c in Sources */,
 				883EA4771EA5C5500095F9A6 /* fh_sqlite.c in Sources */,
 				C949984A1EE5A0C600BAAE1D /* FHSqliteProtocol.m in Sources */,
 			);

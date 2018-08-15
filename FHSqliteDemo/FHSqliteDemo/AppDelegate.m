@@ -20,18 +20,44 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    FHHashRef hash = FHHashCreateWithOptions(0, &kFHCopyStringKeyCallback, NULL);
-    for (int i=0; i<200; i++) {
+    FHHashRef hash = FHHashCreateWithOptions(1000, &kFHCopyStringKeyCallback, NULL);
+    CFMutableDictionaryRef cf_hash = CFDictionaryCreateMutable(CFAllocatorGetDefault(), 0, &kCFCopyStringDictionaryKeyCallBacks, NULL);
+    for (int i=0; i<2000; i++) {
         const void *key = @(i).stringValue.UTF8String;
         const void *value = @(i).stringValue.UTF8String;
         FHHashSetValue(hash, key, value);
     }
-    
-    for (int i=0; i<200; i++) {
-        const void *key = @(i).stringValue.UTF8String;
-        NSLog(@"%s",FHHashGetValue(hash, key));
+    for (int i=0; i<2000; i++) {
+        const void *key =  (__bridge const void *)@(i).stringValue;
+        const void *value = (__bridge const void *)@(i).stringValue;
+        CFDictionarySetValue(cf_hash, key, value);
     }
+    NSTimeInterval begin, end, time;
     
+    begin = CACurrentMediaTime();
+    @autoreleasepool {
+        
+        for (int i=0; i<2000; i++) {
+            const void *key = @(i).stringValue.UTF8String;
+            FHHashGetValue(hash, key);
+        }
+    }
+    end = CACurrentMediaTime();
+    time = end - begin;
+    printf("mine:   %8.2f\n", time * 1000);
+    
+    
+    begin = CACurrentMediaTime();
+    @autoreleasepool {
+        
+        for (int i=0; i<2000; i++) {
+            const void *key =  (__bridge const void *)@(i).stringValue;
+            CFDictionaryGetValue(cf_hash, key);
+        }
+    }
+    end = CACurrentMediaTime();
+    time = end - begin;
+    printf("cf:   %8.2f\n", time * 1000);
     // Override point for customization after application launch.
     return YES;
 }

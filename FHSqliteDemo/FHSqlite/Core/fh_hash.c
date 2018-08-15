@@ -68,6 +68,15 @@ static FHHashCode __FHHashCodeDefaultCallback(const void *key) {
     return((ret >> 16) ^ ret);
 }
 
+typedef struct FHHashEntry {
+    const void *key;
+    const void *value;
+    FHHashCode hash;
+    struct FHHashEntry *next;
+} FHHashEntry;
+
+typedef FHHashEntry * FHHashEntryRef;
+
 struct FHHash {
     FHIndex count;
     FHIndex bucketCount;
@@ -282,4 +291,11 @@ void FHHashApplyFuncation(FHHashRef hash,FHHashApplierFunction applier,void *con
             ++ tempCount;
         }
     }
+}
+
+void FHHashRelease(FHHashRef hash) {
+    if (hash == NULL) return;
+    FHHashClean(hash);
+    free(hash->buckets);
+    free(hash);
 }

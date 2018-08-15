@@ -28,6 +28,7 @@ typedef struct _db_pool {
     linkList *_pool;
 } db_pool;
 
+typedef struct _db_pool * FHDBPoolRef;
 
 FH_EXTERN db_pool *pool_create(uint32_t max_count,void(*db_release)(void *pool_node));
 
