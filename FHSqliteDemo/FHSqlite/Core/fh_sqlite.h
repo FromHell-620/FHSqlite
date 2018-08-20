@@ -15,10 +15,12 @@
 #include "fh_linked.h"
 
 struct sqlite_configuration {
-    unsigned int allow_temp_db : 1;
     unsigned int allow_cache_stmt : 1;
     unsigned int pool_size : 4;
+    void (*callback)(void);//pool 有空闲的node时调用
 };
+
+typedef struct sqlite_configuration * SqliteConfigurationref;
 
 typedef struct fh_sqlite * FHSqliteRef;
 
@@ -26,7 +28,7 @@ FH_EXTERN
 FHSqliteRef FHSqliteCreate(const char *path);
 
 FH_EXTERN
-FHSqliteRef FHSqliteCreateWithOptions(const char *path,struct sqlite_configuration congifuration);
+FHSqliteRef FHSqliteCreateWithOptions(const char *path,SqliteConfigurationref congifuration);
 
 //typedef struct fh_db {
 //    bool is_used;

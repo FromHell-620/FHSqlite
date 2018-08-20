@@ -24,7 +24,13 @@ typedef struct FHPoolValueCallback {
 typedef struct fh_pool * FHPoolRef;
 
 FH_EXTERN
-FHPoolRef FHPoolCreate(unsigned int pool_size,FHPoolValueCallback *callback);
+FHPoolRef FHPoolCreate(unsigned int pool_size,FHPoolValueCallback *valueCallback);
+
+FH_EXTERN
+FHPoolRef FHPoolCreateWithCallback(unsigned int pool_size,FHPoolValueCallback *valueCallback,void(*callback)(void));
+
+FH_EXTERN
+FHBoolean FHPoolIsBusy(FHPoolRef pool);
 
 FH_EXTERN
 linkNode *FHPoolQuery(FHPoolRef pool);
