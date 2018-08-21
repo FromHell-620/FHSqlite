@@ -18,8 +18,6 @@ typedef struct fh_db {
     FHHashRef stmt_cache;
 } fh_db;
 
-typedef fh_db * FHDBRef;
-
 typedef struct fh_sqlite {
     const char *path;
     struct sqlite_configuration *congiguration;

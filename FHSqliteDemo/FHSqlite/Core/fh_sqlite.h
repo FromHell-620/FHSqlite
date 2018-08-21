@@ -20,15 +20,33 @@ struct sqlite_configuration {
     void (*callback)(void);//pool 有空闲的node时调用
 };
 
+typedef union fh_value {
+    int int_value;
+    float float_value;
+    char *str_value;
+    struct {
+        void *blob;
+        unsigned int len;
+    } blob_value;
+} fh_value;
+
 typedef struct sqlite_configuration * SqliteConfigurationref;
 
 typedef struct fh_sqlite * FHSqliteRef;
+
+typedef struct fh_db * FHDBRef;
 
 FH_EXTERN
 FHSqliteRef FHSqliteCreate(const char *path);
 
 FH_EXTERN
 FHSqliteRef FHSqliteCreateWithOptions(const char *path,SqliteConfigurationref congifuration);
+
+FH_EXTERN
+void FHSqliteExec(FHSqliteRef sqlite,FHDBRef db,char *sql);
+
+FH_EXTERN
+void FHSqlitePrepare(FHSqliteRef sqlite,FHDBRef db,char *sql,FHBoolean unuseDB);
 
 FH_EXTERN
 void FHSqliteRelease(FHSqliteRef sqlite);
